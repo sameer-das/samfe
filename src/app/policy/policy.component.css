@@ -1,0 +1,33 @@
+.download_icon {
+    color: #6a3ab7;
+    transition: 0.3s;
+}
+
+.download_icon:hover {
+    transform: scale(1.5);
+    cursor: pointer;
+}
+
+.remove_icon {
+    color: #ffd740;
+    transition: 0.3s;
+    margin-left: 10px;
+}
+
+.remove_icon:hover {
+    transform: scale(1.5);
+    cursor: pointer;
+}
+
+
+#close-button {
+    position: absolute;
+    right: 0px;
+    margin: 0 12px;
+    transition: 0.5s;
+}
+
+#close-button:hover {
+    color: orangered;
+    transform: rotateZ(90deg);
+}

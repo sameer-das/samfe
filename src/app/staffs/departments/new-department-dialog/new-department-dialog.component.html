@@ -1,0 +1,67 @@
+<h3 mat-dialog-title>Create New Department</h3>
+
+<mat-dialog-content>
+  <form [formGroup]="new_department_form">
+    <mat-card>
+      <mat-card-content>
+        <p class="sub-heading">Department Details</p>
+        <div class="row">
+
+            <mat-form-field class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
+              <mat-label>Department Name</mat-label>
+              <input type="text" matInput required formControlName="name">
+            </mat-form-field>
+
+
+            <mat-form-field class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
+              <mat-label>Department Id</mat-label>
+              <input type="text" matInput required formControlName="department_id">
+            </mat-form-field>
+
+          <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
+            <mat-slide-toggle id="toggle-switch" formControlName="isSubDepartment" 
+            [checked]="isSubDepartment" (change)="changeSubDepartmentToggle()" color="primary">Sub-Department</mat-slide-toggle>
+          </div>
+        </div>
+
+        <div *ngIf="isSubDepartment" class="row">
+          <mat-form-field class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+            <mat-label>Parent Department</mat-label>
+            <mat-select formControlName="parent_department">
+              <mat-option *ngFor="let dept of dataFromParent.departments" [value]="dept.id_department"> {{dept.name}} </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+
+        <mat-divider></mat-divider>
+
+        <div formArrayName="designations">
+          <br>
+          <p class="sub-heading">Designations</p>
+          <div class="row" [formGroupName]="i"
+            *ngFor="let designation of new_department_form.get('designations')['controls'];let i = index">
+            <mat-form-field class="col-md-4 col-sm-12 col-xs-12">
+              <mat-label>Desigantion {{i+1}} Name</mat-label>
+              <input type="text" matInput formControlName="designation_name">
+            </mat-form-field>
+
+            <mat-form-field class="col-md-4 col-sm-12 col-xs-12">
+              <mat-label>Designation {{i+1}} Id</mat-label>
+              <input type="text" matInput formControlName="designation_id">
+            </mat-form-field>
+
+            <button class="col-md-4 col-sm-12 col-xs-12" color="accent" mat-button
+              (click)="delete_designation(i)">Delete </button>
+          </div>
+        </div>
+
+      </mat-card-content>
+    </mat-card>
+  </form>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <button mat-button title="Add Designation" (click)="add_new_designation()">Add Designation</button>
+  <button mat-button color="primary" title="Save New Department" (click)="save_department()">Save</button>
+  <button mat-button color="accent" title="Cancel" (click)="closeDialog(false)">Cancel</button>
+</mat-dialog-actions>

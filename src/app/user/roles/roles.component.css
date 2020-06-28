@@ -1,0 +1,16 @@
+#close-button {
+    position: absolute;
+    right: 0px;
+    margin: 0 12px;
+    transition: 0.5s;
+    outline: none;
+}
+
+#close-button:hover {
+    color: orangered;
+    transform: rotateZ(90deg);
+}
+
+.module-name {
+    padding: 14px 0;
+}

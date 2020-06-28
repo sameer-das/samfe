@@ -1,0 +1,28 @@
+button[mat-mini-fab] {
+    margin-left: 5px;
+}
+
+.department_name:hover {
+    color: #6a3ab7;
+    cursor: pointer;
+}
+
+
+#close-button,#delete-button {
+    position: absolute;
+    right: 0px;
+    margin: 0 12px;
+    transition: 0.5s;
+    outline: none;
+}
+
+#close-button:hover {
+    color: orangered;
+    transform: rotateZ(90deg);
+}
+
+.sub-heading {
+    margin: 8px 0px;
+    font-weight: bold;
+    color: #673ab7;
+}

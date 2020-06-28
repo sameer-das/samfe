@@ -1,0 +1,46 @@
+<mat-sidenav-container>
+  <!-- Left Side Bar -->
+  <mat-sidenav
+    [(opened)]="opened"
+    mode="side"
+    #sideNav
+    (opened)="onSideNavOpen()"
+    (closed)="onSideNavClose()"
+  >
+    <br /><br />
+
+    <mat-nav-list>
+      <a *ngIf="+perm.permission_student > 0 || +perm.permission_studentenquiry >= 1" routerLink="/home/students" mat-list-item> Students </a>
+      <a *ngIf="+perm.permission_academics > 0" routerLink="/home/academics" mat-list-item> Academics </a> 
+      <a *ngIf="+perm.permission_staff > 0" routerLink="/home/staffs" mat-list-item> Staffing </a>
+      <!-- <a routerLink="/home/attendance" mat-list-item> Attendance </a>      -->
+      <a *ngIf="+perm.permission_policy > 0" routerLink="/home/policy" mat-list-item> Policies </a>
+      <a *ngIf="+perm.permission_notice > 0" routerLink="/home/notice" mat-list-item> Notice </a>
+      <a *ngIf="+perm.permission_library > 0" routerLink="/home/library" mat-list-item> Library </a>
+      <a *ngIf="+perm.permission_usermanagement > 0" routerLink="/home/users" mat-list-item> User Management </a>
+      <!-- <a routerLink="/home/library" mat-list-item> Certificates </a>
+      <a routerLink="/home/library" mat-list-item> Maintainance </a>
+      <a routerLink="/home/library" mat-list-item> Reports </a> -->
+    </mat-nav-list>
+  </mat-sidenav>
+  <!-- Right Side Content -->
+  <mat-sidenav-content>
+    <mat-toolbar color="primary" class="navbar">
+      <div
+        class="sideMenuToggler"
+        (click)="sideNav.toggle()"
+        title="Toggle Menu"
+      >
+        <mat-icon *ngIf="!opened">menu</mat-icon>
+        <mat-icon *ngIf="opened">menu_open</mat-icon>
+      </div>
+
+      <div>
+        <span><a class="logout" title="Logout" routerLink="/login" (click)="logout()">
+          <mat-icon>power_settings_new</mat-icon></a></span>
+      </div>
+    </mat-toolbar>
+
+    <router-outlet></router-outlet>
+  </mat-sidenav-content>
+</mat-sidenav-container>

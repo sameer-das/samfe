@@ -1,0 +1,203 @@
+<button mat-button *ngIf="perm.permission_academics >= 2" (click)="showNewRoomForm()">New Room <mat-icon>add</mat-icon></button>
+
+<div *ngIf="bShowRooms" class="container">
+  <!-- <h3>Room Details</h3> -->
+  <table class="table" *ngIf="rooms.length > 0">
+    <thead>
+      <tr>
+        <th scope="col">#</th>
+        <th scope="col">Room Name</th>
+        <th scope="col">Campus</th>
+        <th scope="col">Building</th>
+        <th scope="col">Floor</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let room of rooms; let i = index">
+        <td> {{i+1}} </td>
+        <td> <span id="room-detail" (click)=showRoomDetails(room)> {{room.name}} </span></td>
+        <td> {{room.campus_name}} </td>
+        <td> {{room.building_name}} </td>
+        <td> {{room.floor_name}} </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+
+
+
+
+
+
+
+
+<div *ngIf="bShowRoomForm" class="container">
+  <br>
+  <mat-card>
+    <mat-card-title class="text-center">
+      Create New Room
+    </mat-card-title>
+    <mat-card-content>
+      <form [formGroup]="newRoomForm">
+
+        <div class="row">
+          <mat-form-field class="col-md-6 col-sm-12 col-xs-12">
+            <mat-label>Campus Name</mat-label>
+            <mat-select required formControlName="campus" (selectionChange)="onChangeCapmus()">
+              <mat-option *ngFor="let campus of formBoundCampus" [value]="campus.id_campus"> {{campus.campus_name}}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+
+          <mat-form-field class="col-md-6 col-sm-12 col-xs-12">
+            <mat-label>Building Name</mat-label>
+            <mat-select required formControlName="building" (selectionChange)="onChangeBuilding()">
+              <mat-option *ngFor="let building of formBoundBuilding" [value]="building.id_building">
+                {{building.building_name}}</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+
+        <div class="row">
+          <mat-form-field class="col-md-6 col-sm-12 col-xs-12">
+            <mat-label>Floor Name</mat-label>
+            <mat-select required formControlName="floor">
+              <mat-option *ngFor="let floor of formBoundFloor" [value]="floor.id_floor"> {{floor.floor_name}}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+
+          <mat-form-field class="col-md-6 col-sm-12 col-xs-12">
+            <mat-label>Room Name</mat-label>
+            <input type="text" matInput required formControlName="name">
+          </mat-form-field>
+        </div>
+
+      </form>
+    </mat-card-content>
+    <mat-card-actions>
+      <button *ngIf="perm.permission_academics >= 2" mat-raised-button color="primary" (click)="saveNewRoom()">Save </button>
+      <button mat-raised-button color="accent" (click)="hideShowRoomForm()">Cancel </button>
+    </mat-card-actions>
+
+  </mat-card>
+  <br>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div *ngIf="bShowRoomDetail" class="container">
+  <mat-card>
+    <mat-card-subtitle>
+      Room Details
+    </mat-card-subtitle>
+    <mat-card-content>
+      <div class="row">
+        <div class="col-md-6 col-sm-12 col-xs-12"><strong style="color:#673AB7">Room Name:</strong>
+          {{selectedRoom.name}}</div>
+        <div class="col-md-6 col-sm-12 col-xs-12"><strong style="color:#673AB7">Campus Name:</strong>
+          {{selectedRoom.campus_name}} </div>
+      </div>
+      <div class="row">
+        <div class="col-md-6 col-sm-12 col-xs-12"><strong style="color:#673AB7">Building Name:</strong>
+          {{selectedRoom.building_name}}</div>
+        <div class="col-md-6 col-sm-12 col-xs-12"><strong style="color:#673AB7">Floor :</strong>
+          {{selectedRoom.floor_name}}</div>
+      </div>
+
+      
+    </mat-card-content>
+
+    <mat-card-actions align="end">
+      <button *ngIf="perm.permission_academics >= 2" mat-raised-button color="primary" (click)="showEditRoom()">Edit</button>
+      <button mat-raised-button color="accent" (click)="hideRoomDetail()">Close </button>
+    </mat-card-actions>
+
+    <mat-card-footer>
+      <mat-expansion-panel>
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            Time Table Assignment
+
+          </mat-panel-title>
+        </mat-expansion-panel-header>
+        <div>
+          Time Table goes here
+        </div>
+      </mat-expansion-panel>
+    </mat-card-footer>
+  </mat-card>
+  <br>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+<div *ngIf="bShowEditRoom">
+  <mat-card>
+    <mat-card-title class="text-center">
+      Create New Room
+    </mat-card-title>
+    <mat-card-content>
+      <form [formGroup]="editRoomForm">
+
+        <div class="row">
+          <mat-form-field class="col-md-6 col-sm-12 col-xs-12">
+            <mat-label>Campus Name</mat-label>
+            <mat-select required formControlName="campus" (selectionChange)="onChangeCapmus()">
+              <mat-option *ngFor="let campus of formBoundCampus" [value]="campus.id_campus"> {{campus.campus_name}}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+
+          <mat-form-field class="col-md-6 col-sm-12 col-xs-12">
+            <mat-label>Building Name</mat-label>
+            <mat-select required formControlName="building" (selectionChange)="onChangeBuilding()">
+              <mat-option *ngFor="let building of formBoundBuilding" [value]="building.id_building">
+                {{building.building_name}}</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+
+        <div class="row">
+          <mat-form-field class="col-md-6 col-sm-12 col-xs-12">
+            <mat-label>Floor Name</mat-label>
+            <mat-select required formControlName="floor">
+              <mat-option *ngFor="let floor of formBoundFloor" [value]="floor.id_floor"> {{floor.floor_name}}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+
+          <mat-form-field class="col-md-6 col-sm-12 col-xs-12">
+            <mat-label>Room Name</mat-label>
+            <input type="text" matInput required formControlName="name">
+          </mat-form-field>
+        </div>
+
+      </form>
+    </mat-card-content>
+    <mat-card-actions>
+      <button mat-raised-button color="primary" (click)="editRoom()">Update </button>
+      <button mat-raised-button color="accent" (click)="hideEditRoom()">Cancel </button>
+    </mat-card-actions>
+    </mat-card>
+</div>

@@ -1,0 +1,8 @@
+.search-button-group {
+    display: flex;
+    justify-content: center;
+}
+
+.reportee-details p, .manager-details p {
+    margin: 4px 0;
+}

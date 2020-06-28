@@ -1,0 +1,64 @@
+<div class="container">
+  <mat-card>
+    <div class="staff-details">
+      <h5 class="text-center">Organisation Hierarchy</h5>
+      <div class="row">
+        <mat-form-field class="offset-lg-4 offset-md-4 col-lg-4 col-md-4 col-sm-12 col-xs-12">
+          <input matInput placeholder="Staff ID" name="staffId" [(ngModel)]="staffId">
+        </mat-form-field>
+      </div>
+      <div class="search-button-group">
+        <button mat-button color="primary" (click)="searchStaff()">Search</button>
+        <button mat-button color="accent" (click)="clearStaffSearch()">Clear</button>
+      </div>
+      <div *ngIf="showStaffSearchDetails">
+        <div class="row">
+          <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12 reportee-details">
+            <strong>Details</strong>
+            <p> {{staffSearhResult.staff_details[0].staff_name}} ({{staffSearhResult.staff_details[0].staff_id}})</p>
+            <p> {{staffSearhResult.staff_details[0].dept_name }} </p>
+            <p>{{staffSearhResult.staff_details[0].desg_name}}</p>
+            <strong *ngIf="staffSearhResult.staff_manager.length">Current Manager</strong>
+            <p *ngIf="staffSearhResult.staff_manager.length"> {{staffSearhResult.staff_manager[0].manager_name}} ({{staffSearhResult.staff_manager[0].manager_id}}) </p>
+          </div>
+          <div *ngIf="staffSearhResult.staff_reportees.length" class="col-lg-6 col-md-6 col-sm-12 col-xs-12 reportee-details">
+            <strong>Direct Reportees</strong>
+            <p *ngFor="let reportee of staffSearhResult.staff_reportees"> {{reportee.staff_name}} ({{reportee.staff_id}})</p>
+          </div>
+        </div>
+        <div *ngIf="perm.permission_staff >= 2" class="row">
+          <div class="offset-lg-9 offset-md-9 col-lg-3 col-md-3 col-sm-12 col-xs-12">
+            <button mat-button color="primary" *ngIf="!bshowChangeManager" (click)="showChangeManager()">Change
+              Manager</button>
+            <button mat-button color="accent" *ngIf="bshowChangeManager" (click)="hideChangeManager()">Close</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+    <div *ngIf="bshowChangeManager" class="change-manager">
+      <h5 class="text-center">Change Line Manager</h5>
+      <div class="row">
+        <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12 ">
+          <mat-form-field class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+            <mat-label>Enter Staff ID for Line Manager</mat-label>
+            <input matInput name="managerId" [(ngModel)]="managerId">
+          </mat-form-field>
+          <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+            <button mat-button color="primary" (click)="searchManager()">Search</button>
+            <button mat-button color="accent" (click)="clearManagerSearch()">Clear</button>
+          </div>
+        </div>
+
+        <div *ngIf="showManagerSearchDetail" class="col-lg-6 col-md-6 col-sm-12 col-xs-12 manager-details">
+          <strong>Details</strong>
+          <p>{{ managerSearhResult.staff_name }} ({{managerSearhResult.staff_id}}) </p>
+          <p>{{managerSearhResult.dept_name}} </p>
+          <p> {{managerSearhResult.desg_name}} </p>
+          <button mat-button color="primary" (click)="assign_manager()">Assign</button>
+        </div>
+      </div>
+    </div>
+  </mat-card>
+  <br>

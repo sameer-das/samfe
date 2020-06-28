@@ -1,0 +1,74 @@
+<button *ngIf="bShowNoticeList && +perm.permission_policy >= 2" mat-button (click)="showDocumentUpload()">Add Notice</button>
+
+<h5 class="text-center" *ngIf="bShowNoticeList && !notices.length">No Notice Found!</h5>
+<div *ngIf="bShowNoticeList && notices.length" class="container">
+  <table class="table">
+    <thead>
+      <tr>
+        <th scope="col">#</th>
+        <th scope="col">Notice Name</th>
+        <th scope="col">Date</th>
+        <th scope="col">Type</th>
+        <th scope="col">Size</th>
+        <th scope="col">Action</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let notice of notices; let i = index">
+        <th scope="row"> {{i+1}} </th>
+        <td> {{notice.identifier}} </td>
+        <td> {{notice.created_on | date:'dd-MMM-yyyy'}} </td>
+        <td> {{notice.mimetype.split('/')[1] | uppercase}} </td>
+        <td> {{convert_to_kb(notice.size)}} KB</td>
+        <td>
+          <mat-icon class="download_icon" (click)="download(notice.uniqid, notice.identifier)">save_alt</mat-icon>
+          <mat-icon *ngIf="+perm.permission_policy >= 2" (click)="delete_file(notice.uniqid)" class="remove_icon">delete</mat-icon>
+        </td>
+      </tr>
+    </tbody>
+
+  </table>
+</div>
+
+
+
+
+<div *ngIf="bShowUploadForm && +perm.permission_policy >= 2" class="container">
+  <mat-card>
+    <mat-card-header>
+      <mat-card-title>Add New Notice</mat-card-title>
+      <button type="button" id="close-button" aria-label="Close" color="warn" title="Close" mat-icon-button
+        (click)="hideDocumentUpload()">
+        <mat-icon>close</mat-icon>
+      </button>
+    </mat-card-header>
+
+    <mat-card-content>
+      <div class="offset-md-3 col-md-6 col-sm-12 col-xs-12">
+        <div class="parent-div">    
+          <div class="upload-form">
+            <form #f="ngForm">
+              <div class="form-group">
+                <label for="noticename"></label>
+                <input class="form-control" [(ngModel)]="noticename" name="noticename" type="text" id="noticename"
+                  placeholder="Notice Name">
+              </div>
+    
+              <div class="form-group">
+                <label for="file">Select only PDF files</label>
+                <input #fileinput name="{{noticename}}" [disabled]="!noticename" (change)="onFileChange($event,f)"
+                  class="form-control-file" type="file" id="file">
+              </div>
+              <button *ngIf="+perm.permission_policy >= 2" type="button" color="primary" [disabled]="!noticename" class="btn-block" mat-stroked-button (click)="uploadFile()"> Upload</button>
+              <button type="button" [disabled]="!noticename" color="primary" class="btn-block" mat-stroked-button (click)="clear(f)"> Clear</button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </mat-card-content>
+  </mat-card>
+
+</div>
+
+
+

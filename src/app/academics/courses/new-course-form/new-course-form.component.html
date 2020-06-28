@@ -1,0 +1,119 @@
+
+  
+    <div class="container">
+      <form [formGroup]="new_course_form" >
+        <mat-card>
+        <mat-card-content>
+
+        <div class="row">
+          <mat-form-field class="col-md-4 col-sm-12 col-xs-12">
+            <mat-label >Course Name</mat-label>
+            <input type="text" matInput required formControlName="course_name">
+          </mat-form-field>
+      
+          <mat-form-field class="col-md-4 col-sm-12 col-xs-12">
+            <mat-label>Awardng Body</mat-label>
+            <mat-select  required formControlName="id_awarding_body" (selectionChange)="onAwardingbodyChange()" >
+              <mat-option *ngFor="let abody of awardingbodies" [value]="abody.id_awarding_body" > {{abody.name}} </mat-option>
+            </mat-select>            
+          </mat-form-field>    
+
+          <mat-form-field class="col-md-4 col-sm-12 col-xs-12">
+            <mat-label>Department</mat-label>
+            <mat-select  required formControlName="id_department">
+              <mat-option *ngFor="let dept of formBoundAcademicDepartments" [value]="dept.id_academic_department"> {{dept.department_name}} </mat-option>
+            </mat-select>
+          </mat-form-field>           
+        </div>
+        
+        <div class="row">     
+          <mat-form-field class="col-md-6 col-sm-12 col-xs-12">
+            <mat-label>Course in Charge</mat-label>
+            <input type="text" matInput required formControlName="course_in_charge" >
+            <mat-icon id="search-button" matSuffix (click)="onSearchStaff()">search</mat-icon>
+          </mat-form-field>
+    
+          <mat-form-field class="col-md-6 col-sm-12 col-xs-12">
+            <mat-label>Required Documents</mat-label>
+            <mat-select formControlName="required_documents" multiple>
+              <mat-option *ngFor="let doc of documents" [value]="doc.id_document">{{doc.document_name}}</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+    
+    <div class="row">
+      <mat-form-field class="col-md-4 col-sm-6 col-xs-6">
+        <mat-label >Course Duration</mat-label>
+        <input type="text" matInput required formControlName="course_duration" >
+      </mat-form-field>
+    
+      <mat-form-field class="col-md-2 col-sm-6 col-xs-6">
+        <mat-label>Duration in</mat-label>
+        <mat-select  required formControlName="course_duration_unit">
+          <mat-option value="days">Days</mat-option>
+          <mat-option value="months">Months</mat-option>
+          <mat-option value="years">Years</mat-option>
+          <mat-option value="hours">Hours</mat-option>
+        </mat-select>
+      </mat-form-field>
+    
+      <mat-form-field class="col-md-4 col-sm-6 col-xs-6">
+        <mat-label >Course Fee</mat-label>
+        <input type="text" matInput required formControlName="course_fee" >
+      </mat-form-field>
+    
+      <mat-form-field class="col-md-2 col-sm-6 col-xs-6">
+        <mat-label>Fee(Unit)</mat-label>
+        <mat-select  required formControlName="course_fee_unit">
+          <mat-option value="inr">INR</mat-option>
+          <mat-option value="pound">Pound</mat-option>
+          <mat-option value="usd">USD</mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+    
+  </mat-card-content>
+</mat-card>
+    
+    <div formArrayName="subjects" >
+      <mat-card [formGroupName]="i" *ngFor="let subject of new_course_form.get('subjects')['controls'];let i = index">
+        <!-- <mat-card-subtitle># </mat-card-subtitle> -->
+        <mat-card-content>
+          <mat-form-field class="col-md-3 col-sm-6 col-xs-12">
+            <mat-label>Subject {{i+1}}</mat-label>
+            <input type="text" matInput formControlName="subject_name" >
+          </mat-form-field>
+        
+          <mat-form-field class="col-md-3 col-sm-6 col-xs-12">
+            <mat-label >Subject {{i+1}} Code</mat-label>
+            <input type="text" matInput formControlName="subject_code" >
+          </mat-form-field>
+        
+          <mat-form-field class="col-md-3 col-sm-12 col-xs-12">
+            <mat-label >Duration(In hours)</mat-label>
+            <input type="text" matInput formControlName="subject_duration" >
+          </mat-form-field>
+    
+          <button class="col-md-3 col-sm-12 col-xs-12" color="accent" mat-button (click)="delete_subject(i)">Delete</button>
+    
+        </mat-card-content>
+    
+      </mat-card>
+      
+    </div>
+      </form>
+
+  
+
+
+  <button mat-button  title="Add Subject" (click)="add_new_subject()" >Add Subject</button>
+  <button mat-button color="primary" [disabled]="new_course_form.invalid" title="Save New Course" (click)="save_course()">Save</button>
+  <button mat-button color="primary" title="Clear" (click)="clear_new_course_form()">Clear</button>
+  <button mat-button color="accent" title="Cancel" (click)="cancel()">Cancel</button>
+
+    </div>
+      
+  
+
+
+  

@@ -1,0 +1,109 @@
+<div class="container">
+  <div>
+    <button mat-button *ngIf="perm.permission_staff >= 2" (click)="openCreateNewDepartmentDialog()">New Department <mat-icon>add</mat-icon></button>
+  </div>
+
+  <br><br>
+  <h6 *ngIf="!departments.length" class="text-center">No Departments Found</h6>
+  <table *ngIf="departments.length && !bShowEditForm" class="table">
+    <thead>
+      <tr>
+        <th scope="col">#</th>
+        <th scope="col">Department ID</th>
+        <th scope="col">Department Name</th>
+        <th scope="col">Created On</th>
+        <th scope="col" class="text-center" *ngIf="perm.permission_staff >= 2">Action</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let department of departments; let i = index">
+        <th scope="row"> {{i + 1}} </th>
+        <td> {{department.department_id}} </td>
+        <td><span class="department_name" (click)="openDepartmentDetailDialog(department)"> {{department.name}} </span>
+        </td>
+        <td> {{department.createdAt | date:'dd-MMM-yyyy'}} </td>
+        <td *ngIf="perm.permission_staff >= 2" class="text-center">
+          <button mat-button color="primary" title="Edit" (click)="onDepartmentEdit(department)">
+            <mat-icon>edit</mat-icon>
+          </button>
+          <!-- <button mat-button color="accent" title="Remove" (click)="onDepartmentRemove(id)">
+            <mat-icon>delete</mat-icon>
+          </button> -->
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+
+  <mat-card *ngIf="bShowEditForm">
+    <mat-card-header>
+      <mat-card-title>
+        Edit Department
+        <button type="button" id="close-button" aria-label="Close" color="accent" title="Close" mat-icon-button
+          (click)="hideEditForm()">
+          <mat-icon>close</mat-icon>
+        </button>
+      </mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <form [formGroup]="edit_department_form">
+        <p class="sub-heading">Department Details</p>
+        <div class="row">
+
+            <mat-form-field class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
+              <mat-label>Department Name</mat-label>
+              <input type="text" matInput required formControlName="name">
+            </mat-form-field>
+
+
+            <mat-form-field class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
+              <mat-label>Department Id</mat-label>
+              <input type="text" matInput required formControlName="department_id">
+            </mat-form-field>
+
+          <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
+            <mat-slide-toggle id="toggle-switch" formControlName="isSubDepartment" 
+            color="primary">Sub-Department</mat-slide-toggle>
+          </div>
+        </div>
+
+        <div *ngIf="edit_department_form.get('isSubDepartment').value" class="row">
+          <mat-form-field class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+            <mat-label>Parent Department</mat-label>
+            <mat-select formControlName="parent_department">
+              <mat-option *ngFor="let dept of edit_form_bound_departments" [value]="dept.id_department"> {{dept.name}} </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+
+        <mat-divider></mat-divider>
+
+        <div formArrayName="designations">
+          <br>
+          <p class="sub-heading">Designations</p>
+          <div class="row" [formGroupName]="i"
+            *ngFor="let designation of edit_department_form.get('designations')['controls'];let i = index">
+            <mat-form-field class="col-md-4 col-sm-12 col-xs-12">
+              <mat-label>Desigantion {{i+1}} Name</mat-label>
+              <input type="text" matInput formControlName="designation_name">
+            </mat-form-field>
+
+            <mat-form-field class="col-md-4 col-sm-12 col-xs-12">
+              <mat-label>Designation {{i+1}} Id</mat-label>
+              <input type="text" matInput formControlName="designation_id">
+            </mat-form-field>
+
+            <button class="col-md-4 col-sm-12 col-xs-12" color="accent" mat-button
+              (click)="delete_designation(i)">Delete </button>
+          </div>
+        </div>
+
+      </form>
+    </mat-card-content>
+    <mat-card-actions align="end">
+      <button mat-button title="Add Designation" (click)="add_new_designation()">Add Designation</button>
+      <button mat-button title="Update" color="primary" (click)="unUpdate()">Update</button>
+    </mat-card-actions>
+  </mat-card>
+</div>
+

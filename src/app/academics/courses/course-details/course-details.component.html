@@ -1,0 +1,226 @@
+<div class="container" *ngIf="!showEditForm">
+  <mat-card >
+    <mat-card-title> Course Details </mat-card-title>
+    <mat-card-content>
+      <div class="row text-center">
+        <div class="col-md-4 col-sm-4 col-xs-4">
+          <span class="tit"> Name</span>
+          <p>{{course.name}}</p>
+        </div>
+        <div class="col-md-4 col-sm-4 col-xs-4">
+          <span class="tit"> Department</span>
+          <p>{{course.department_name}}</p>
+        </div>
+        <div class="col-md-4 col-sm-4 col-xs-4">
+          <span class="tit"> Awarding Body </span>
+          <p>{{course.awarding_body_name}}</p>
+        </div>
+  
+      </div>
+      <div class="row text-center">
+        <div class="col-md-4 col-sm-4 col-xs-4">
+          <span class="tit"> Course Duration</span>
+          <p>{{course.course_duration}} ({{course.course_duration_unit | uppercase}})</p>
+        </div>
+        <div class="col-md-4 col-sm-4 col-xs-4">
+          <span class="tit"> Course Fee </span>
+          <p>{{course.course_fee}} ({{course.course_fee_unit | uppercase}})</p>
+        </div>
+        <div class="col-md-4 col-sm-4 col-xs-4">
+          <span class="tit"> In Charge </span>
+          <p>{{course.course_incharge_name}}</p>
+        </div>
+      </div>
+  
+      <div class="row">
+        <div class="col-md-6 col-sm-6 col-xs-12">
+          <mat-expansion-panel>
+            <mat-expansion-panel-header>
+              <mat-panel-title>
+                Course Subjects
+              </mat-panel-title>
+            </mat-expansion-panel-header>
+            <div class="row" *ngFor="let sub of subjects">
+              <div class="col-md-6 col-sm-6 col-xs-6">{{sub.subject_name}} ({{sub.subject_code}})</div>
+              <div class="col-md-6 col-sm-6 col-xs-6">{{sub.subject_duration}} (Hours)</div>
+            </div>
+          </mat-expansion-panel>
+        </div>
+        <div class="col-md-6 col-sm-6 col-xs-12">
+          <mat-expansion-panel>
+            <mat-expansion-panel-header>
+              <mat-panel-title>
+                Required Documents
+              </mat-panel-title>
+            </mat-expansion-panel-header>
+            <div class="row" *ngFor="let doc of mapped_documents; let i = index">
+              <div class="col-md-12 col-sm-12 col-xs-12">#{{i+1}} : {{doc.document_name}}</div>
+            </div>
+          </mat-expansion-panel>
+        </div>
+      </div>
+      <br>
+      <h6 *ngIf="mapped_staffs.length > 0" class="text-center">Mapped Staffs</h6>
+      <div *ngIf="mapped_staffs.length > 0" class="row">
+        <div class="offset-lg-3 offset-md-3 col-lg-6 col-md-6 col-sm-12 col-xs-12">
+          <div *ngFor="let staff of mapped_staffs; let i = index" class="row">
+            <div class="col-lg-9 col-md-9 col-sm-12 col-xs-12">{{i+1}}. {{staff.name}} ({{staff.staff_id}})</div>
+            <div  *ngIf="perm.permission_academics >= 2"  class="col-lg-3 col-md-3 col-sm-12 col-xs-12 text-center"><button mat-button color="warn" title="Remove Mapping" (click)="remove_staff_course_mapping(staff.id_mapping)">Remove</button></div>
+          </div>
+        </div>
+      </div>
+    </mat-card-content>
+    <mat-card-actions align="end">
+
+      <button mat-button  *ngIf="perm.permission_academics >= 2"  (click)="show_map_staff_form()">Map Staff</button>
+      <button mat-button  *ngIf="perm.permission_academics >= 2"  color="primary" (click)="onEdit()">Edit</button>
+      <button mat-button color="accent" (click)="cancel()">Cancel</button>
+  
+    </mat-card-actions>
+  
+  </mat-card>
+<br>
+</div>
+
+
+<div class="container" *ngIf="bShowMapStaffForm">
+  <mat-card>
+    <mat-card-header>
+      <mat-card-title>Map Staff</mat-card-title>
+      <button type="button" id="close-button" aria-label="Close" color="accent" title="Close" mat-icon-button
+        (click)="hide_map_staff_form()">
+        <mat-icon>close</mat-icon>
+      </button>
+    </mat-card-header>
+    <mat-card-content>
+      <form [formGroup]="mapStaffForm">
+        <div class="row">
+          <mat-form-field class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+            <mat-label>Staff</mat-label>
+            <input type="text" matInput formControlName="staff_id">
+            <mat-icon id="search-button" matSuffix (click)="onSearchStaffForMapping()">search</mat-icon>
+          </mat-form-field>
+          <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+            <button type="button" mat-button color="primary" title="Map Staff" (click)="mapStaff()">Map</button>
+          </div>
+        </div>
+      </form>
+     
+
+    </mat-card-content>
+    </mat-card>
+    <br>
+</div>
+
+
+
+
+
+<div class="container" *ngIf="showEditForm">
+  <mat-card >
+    <mat-card-content>
+      <form [formGroup]="editCourseForm">
+  
+        <div class="row">
+          <mat-form-field class="col-md-4 col-sm-12 col-xs-12">
+            <mat-label>Course Name</mat-label>
+            <input type="text" matInput required formControlName="course_name">
+          </mat-form-field>
+  
+          <mat-form-field class="col-md-4 col-sm-12 col-xs-12">
+            <mat-label>Awardng Body</mat-label>
+            <mat-select required formControlName="awarding_body" (selectionChange)="onAwardingbodyChange()">
+              <mat-option *ngFor="let abody of awardingbodies" [value]="abody.id_awarding_body"> {{abody.name}} </mat-option>
+            </mat-select>
+          </mat-form-field>
+  
+          <mat-form-field class="col-md-4 col-sm-12 col-xs-12">
+            <mat-label>Department</mat-label>
+            <mat-select required formControlName="department">
+              <mat-option *ngFor="let dept of formBoundAcademicDepartments" [value]="dept.id_academic_department"> {{dept.department_name}}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+  
+        <div class="row">
+          <mat-form-field class="col-md-6 col-sm-12 col-xs-12">
+            <mat-label>Course in Charge</mat-label>
+            <input type="text" matInput required formControlName="course_in_charge">
+            <mat-icon id="search-button" matSuffix (click)="onSearchStaff()">search</mat-icon>
+          </mat-form-field>
+  
+          <mat-form-field class="col-md-6 col-sm-12 col-xs-12">
+            <mat-label>Required Documents</mat-label>
+            <mat-select formControlName="required_documents" multiple>
+              <mat-option *ngFor="let doc of documents" [value]="doc.id_document">{{doc.document_name}}</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+  
+        <div class="row">
+          <mat-form-field class="col-md-4 col-sm-6 col-xs-6">
+            <mat-label>Course Duration</mat-label>
+            <input type="text" matInput required formControlName="course_duration">
+          </mat-form-field>
+  
+          <mat-form-field class="col-md-2 col-sm-6 col-xs-6">
+            <mat-label>Duration in</mat-label>
+            <mat-select required formControlName="course_duration_unit">
+              <mat-option value="days">Days</mat-option>
+              <mat-option value="months">Months</mat-option>
+              <mat-option value="years">Years</mat-option>
+              <mat-option value="hours">Hours</mat-option>
+            </mat-select>
+          </mat-form-field>
+  
+          <mat-form-field class="col-md-4 col-sm-6 col-xs-6">
+            <mat-label>Course Fee</mat-label>
+            <input type="text" matInput required formControlName="course_fee">
+          </mat-form-field>
+  
+          <mat-form-field class="col-md-2 col-sm-6 col-xs-6">
+            <mat-label>Fee(Unit)</mat-label>
+            <mat-select required formControlName="course_fee_unit">
+              <mat-option value="inr">INR</mat-option>
+              <mat-option value="pound">Pound</mat-option>
+              <mat-option value="usd">USD</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+        <mat-divider></mat-divider>
+        <br>
+        <div formArrayName="subjects">
+          <div class="row" [formGroupName]="i" *ngFor="let subject of editCourseForm.get('subjects')['controls'];let i = index">
+            <mat-form-field class="col-md-3 col-sm-6 col-xs-12">
+              <mat-label>Subject {{i+1}}</mat-label>
+              <input type="text" matInput formControlName="subject_name" >
+            </mat-form-field>
+          
+            <mat-form-field class="col-md-3 col-sm-6 col-xs-12">
+              <mat-label >Subject {{i+1}} Code</mat-label>
+              <input type="text" matInput formControlName="subject_code" >
+            </mat-form-field>
+          
+            <mat-form-field class="col-md-3 col-sm-12 col-xs-12">
+              <mat-label >Duration(In hours)</mat-label>
+              <input type="text" matInput formControlName="subject_duration" >
+            </mat-form-field>
+      
+            <button class="col-md-3 col-sm-12 col-xs-12" color="accent" mat-button (click)="delete_subject(i)">Delete Subject</button>
+      
+          </div>
+        </div>
+      </form>
+    </mat-card-content>
+    <mat-card-actions>
+      <button mat-button (click)="add_new_subject()">Add Subject</button>
+      <button mat-button color="primary" (click)="onUpdate()">Update</button>
+      <button mat-button color="accent" (click)="onEditCancel()">Cancel</button>
+    </mat-card-actions>
+  </mat-card>
+  <br>
+</div>
+
+
+

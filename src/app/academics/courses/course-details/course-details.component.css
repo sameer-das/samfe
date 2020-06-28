@@ -1,0 +1,19 @@
+.tit{
+    color: #FFD740;
+}
+
+mat-card-title {
+    color:#673AB7;
+}
+
+#close-button {
+    position: absolute;
+    right: 0px;
+    margin: 0 12px;
+    transition: 0.5s;
+}
+
+#close-button:hover {
+    color: orangered;
+    transform: rotateZ(90deg);
+}

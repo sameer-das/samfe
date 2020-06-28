@@ -1,0 +1,23 @@
+<h2 mat-dialog-title> {{data.department.name}}</h2>
+<mat-dialog-content>
+  <table class="table">
+    <thead>
+      <tr>
+        <th scope="col">#</th>
+        <th scope="col">Designation ID</th>
+        <th scope="col">Designation Name</th>       
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let designation of data.department.designations; let i = index" >
+        <th scope="row"> {{i + 1}} </th>
+        <td> {{designation.designation_id}} </td>
+        <td> {{designation.designation_name}} </td>      
+      </tr>
+    </tbody>
+  </table>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <button mat-raised-button (click)="close()">Close</button>
+</mat-dialog-actions>

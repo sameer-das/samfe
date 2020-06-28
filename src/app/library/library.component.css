@@ -1,0 +1,120 @@
+
+#close-button,#delete-button {
+    position: absolute;
+    right: 0px;
+    margin: 0 12px;
+    transition: 0.5s;
+    outline: none;
+}
+
+#close-button:hover {
+    color: orangered;
+    transform: rotateZ(90deg);
+}
+#delete-button:hover {
+    color: orangered;
+}
+
+.details p {
+    margin: 0;
+    word-wrap: break-word;
+}
+
+.box1 img {
+    height: 125px;
+    width: 125px;
+}
+
+
+.search-button-group button{
+    margin: 0 4px;
+}
+
+.user-action-buttons {
+    position: relative;
+    bottom: 0px;
+}
+
+.user-action-buttons button {
+    margin: 0 4px;
+    transition: 0.5s;
+}
+.user-action-buttons button:hover {
+    background: #673ab7;
+    color: #fff;
+}
+.search-box {
+    margin: 15px 0;
+}
+.search-button-group {
+    margin: 30px 0;
+    /* text-align: center; */
+}
+
+.return-book-details, .search-book-details {
+    border: 1px solid grey;
+    border-radius: 14px;
+    padding: 12px;
+    margin: 6px ;
+}
+
+.edit-button {
+    /* margin: 30px; */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+
+#return-button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+.issue-book-details {
+    border: 1px solid grey; 
+    border-radius: 14px;
+    margin: 6px ;
+    padding: 12px;
+}
+
+.issue-book-details p, .search-book-details p {
+    margin: 0;
+}
+
+.radio-button-group {
+    display: flex;
+    flex-direction: row;
+  }
+
+.radio-button {
+    margin: 5px;
+}
+
+
+#close-report button{
+    float: right;
+}
+
+#close-report-button {
+    transition: 0.5s;
+}
+
+#close-report-button:hover {
+    color: orangered;
+    transform: rotateZ(90deg);
+}
+
+#report-radio-grp mat-radio-button {
+    margin: 0 4px; 
+}
+
+.button-center {
+    margin: auto;
+}
+
+.menu-btn-group button {
+    margin: 2px 4px 0 4px;
+}

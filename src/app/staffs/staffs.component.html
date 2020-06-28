@@ -1,0 +1,17 @@
+<mat-tab-group (selectedTabChange)="tabChanged($event)">
+  <mat-tab *ngIf="perm.permission_staff > 0" label="Staff Details">
+    <app-staff-details [indexOfTab]="selectedTab"></app-staff-details>
+  </mat-tab> 
+  <mat-tab *ngIf="perm.permission_staff >= 1" label="Departments">
+    <app-departments [indexOfTab]="selectedTab"></app-departments>
+  </mat-tab>
+  
+  <mat-tab *ngIf="perm.permission_staff >= 2" label="Create Staff">
+    <app-create-staff ></app-create-staff>
+  </mat-tab>  
+
+  <mat-tab *ngIf="perm.permission_staff >= 1" label="Hierarchy">
+    <app-hierarchy></app-hierarchy>
+  </mat-tab>
+
+</mat-tab-group>

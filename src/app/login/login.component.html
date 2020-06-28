@@ -1,0 +1,19 @@
+<div class="main-div">
+  <div class="login-box">
+    <h2 class="heading">User Login</h2>
+    <form #loginForm="ngForm" (submit)="login(loginForm)">
+      <div>
+        <input type="text" placeholder="User ID" name="userid" required ngModel autocomplete="off">
+      </div>
+      <div>
+        <input type="password" placeholder="Passsword" name="password" required ngModel>
+      </div>
+      <button id="submit" [disabled]="loginForm.invalid || islogingIn" type="submit">Login</button>
+      
+      <a id="forgotpassword" routerLink="/changepassword">Forgot Password</a>
+      <div class="message">
+        {{message}}
+      </div>
+    </form>
+  </div>
+</div>

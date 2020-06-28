@@ -1,0 +1,113 @@
+<br> <br>
+
+<div class="container">
+  <mat-card>
+    <mat-card-content>
+      <form [formGroup]="create_new_staff">
+        <div class="row">
+          <mat-form-field class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
+            <mat-label>Staff Id</mat-label>
+            <input matInput type="text" formControlName="staff_id" required />
+          </mat-form-field>
+          <mat-form-field class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
+            <mat-label>Name</mat-label>
+            <input matInput type="text" formControlName="name" required />
+          </mat-form-field>
+          <mat-form-field class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
+            <mat-label>Mobile No</mat-label>
+            <input matInput type="text" maxlength="10" formControlName="mobile" required />
+          </mat-form-field>
+          <mat-form-field class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
+            <mat-label>Emergency Contact</mat-label>
+            <input matInput type="text" maxlength="10" formControlName="emergency_contact" />
+          </mat-form-field>
+        </div>
+      
+        <div class="row">
+          <mat-form-field class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
+            <mat-label>Email</mat-label>
+            <input matInput type="email" formControlName="email">
+          </mat-form-field>
+      
+          <mat-form-field class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
+            <mat-label>Gender</mat-label>
+            <mat-select formControlName="gender" required>
+              <mat-option value="m">Male</mat-option>
+              <mat-option value="f">Female</mat-option>
+              <mat-option value="o">Other</mat-option>
+            </mat-select>
+          </mat-form-field>
+      
+          <mat-form-field class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
+            <mat-label>Blood Group</mat-label>
+            <mat-select formControlName="bloodgroup" required>
+              <mat-option value="A+">A+</mat-option>
+              <mat-option value="A-">A-</mat-option>
+              <mat-option value="B+">B+</mat-option>
+              <mat-option value="B-">B-</mat-option>
+              <mat-option value="O+">O+</mat-option>
+              <mat-option value="O-">O-</mat-option>
+              <mat-option value="AB+">AB+</mat-option>
+              <mat-option value="AB-">AB-</mat-option>
+            </mat-select>
+          </mat-form-field>
+      
+          <mat-form-field class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
+            <mat-label>Date of Birth</mat-label>
+            <input matInput [matDatepicker]="picker" readonly formControlName="dob" required>
+            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+            <mat-datepicker #picker></mat-datepicker>
+          </mat-form-field>
+        </div>
+      
+      
+        <div class="row">
+          <mat-form-field class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+            <mat-label>Permanet Address</mat-label>
+            <textarea matInput formControlName="permanent_address" required></textarea>
+          </mat-form-field>
+          <mat-form-field class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+            <mat-label>Current Address</mat-label>
+            <textarea matInput formControlName="current_address" required></textarea>
+          </mat-form-field>
+          <mat-checkbox #ref id="check-address" (change)="samePermanentCurrentAddress(ref.checked)">Permanet and current address are same
+          </mat-checkbox>
+        </div>
+      
+        <div class="row">
+          <mat-form-field class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
+            <mat-label>Date of Joining</mat-label>
+            <input matInput [matDatepicker]="picker1" readonly formControlName="doj" required>
+            <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+            <mat-datepicker #picker1></mat-datepicker>
+          </mat-form-field>
+      
+          <mat-form-field class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
+            <mat-label>Medical History</mat-label>
+            <input matInput type="text" formControlName="past_med_history">
+          </mat-form-field>
+      
+          <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
+            <mat-checkbox #married formControlName="married">Married</mat-checkbox>
+          </div>
+      
+          <mat-form-field class="col-lg-3 col-md-3 col-sm-12 col-xs-12" *ngIf="married.checked">
+            <mat-label>Spouse Name</mat-label>
+            <input type="text" matInput formControlName="spouse_detail">
+          </mat-form-field>
+        </div>
+      
+        <div class="text-center button-group">
+          <button mat-raised-button color="accent" type="button" title="Clear Form"
+            (click)="clear()">Clear</button>
+          <button mat-raised-button color="primary" [disabled]="create_new_staff.invalid"
+            title="Save Details" type="button" (click)="save()">Save</button>
+        </div>
+      
+      </form>
+    </mat-card-content>
+  </mat-card>
+</div>
+
+
+<br>

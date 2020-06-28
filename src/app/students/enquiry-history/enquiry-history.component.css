@@ -1,0 +1,21 @@
+.enquiry-box, .communication-detail {
+    border: 1px solid #673ab7;
+    border-radius: 8px;
+    padding: 8px;
+    margin: 8px 0;
+}
+
+
+#close-button,#delete-button {
+    position: absolute;
+    right: 0px;
+    margin: 0 12px;
+    transition: 0.5s;
+    outline: none;
+}
+
+#close-button:hover {
+    color: orangered;
+    transform: rotateZ(90deg);
+}
+

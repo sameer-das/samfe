@@ -1,0 +1,74 @@
+<button *ngIf="perm.permission_academics >= 2" mat-button (click)="showNewBatchForm()">New Batch<mat-icon>add</mat-icon></button>
+
+<br>
+
+<div *ngIf="!bShowNewBatchForm" class="container">
+  <table class="table" *ngIf="batches.length > 0">
+    <thead>
+      <tr>
+        <th scope="col">#</th>
+        <th scope="col">Batch Name</th>
+        <th scope="col">Course</th>
+        <th scope="col">Start Date</th>
+        <!-- <th scope="col">End Date</th> -->
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let batch of batches; let i = index">            
+        <td> {{i+1}} </td>
+        <td> {{batch.batch_name}} </td>
+        <td> {{batch.course_name}} </td>
+        <td> {{batch.start_date | date : 'dd-MMM-yyyy'}} </td>
+        <!-- <td> {{batch.end_date}} </td> -->
+      </tr>
+      </tbody>
+  </table>
+</div>
+
+
+
+<!-- New Batch Form -->
+<div *ngIf="bShowNewBatchForm && perm.permission_academics >= 2" >
+  <mat-card>
+    <mat-card-title>
+      Create New Batch
+    </mat-card-title>
+    <mat-card-content>
+      <form [formGroup]="newBatchForm">
+        <div class="row">
+          <mat-form-field class="col-md-6 col-sm-12 col-xs-12">
+            <mat-label >Batch Name</mat-label>
+            <input type="text" matInput required formControlName="name">
+          </mat-form-field>
+
+          <mat-form-field class="col-md-6 col-sm-12 col-xs-12">
+            <mat-label>Course</mat-label>
+            <mat-select formControlName="course" required (selectionChange)="onCourseChange()">
+              <mat-option *ngFor="let course of courses" [value]="course.id_course"> {{course.name}} </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+
+        <div class="row">
+          <mat-form-field class="col-md-6 col-sm-12 col-xs-12">
+            <mat-label>Start Date</mat-label>
+            <input matInput [matDatepicker]="picker" readonly formControlName="start_date" required (dateChange)="startDateChanged($event)">
+            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+            <mat-datepicker #picker ></mat-datepicker>
+            
+          </mat-form-field>
+
+          <!-- <div class="col-md-6 col-sm-12 col-xs-12">
+            <p *ngIf="courseEndDate" class="course-end-date">Course will be ended by : {{courseEndDate}} </p>
+          </div> -->
+        </div>
+      </form>
+    </mat-card-content>
+
+    <mat-card-actions>
+      <button mat-raised-button color="accent" (click)="hideNewBatchForm()">Cancle</button>
+      <button *ngIf="perm.permission_academics >= 2" mat-raised-button color="primary" (click)="saveNewBatch()" [disabled]="newBatchForm.invalid">Save</button>
+    </mat-card-actions>
+  </mat-card>
+
+</div>

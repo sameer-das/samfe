@@ -1,0 +1,263 @@
+<br>
+<div class="container" *ngIf="bShowRoles">  
+  <div class="text-center">
+    <button mat-flat-button color="primary" (click)="showNewRoleForm()">Create Role</button>
+  </div>
+  <br>
+      <div class="row" *ngFor="let role of roles; let i = index">
+        <div class="col-xl-4 col-md-4 col-xs-12 col-sm-12 text-left"> <strong>Role Name : </strong>  {{role.role_name | uppercase}} </div>
+        <div class="col-xl-4 col-md-4 col-xs-12 col-sm-12 text-left"> <strong>Created On : </strong>  {{role.created_on | date:'dd-MMM-yyyy'}} </div>
+        <div class="col-xl-4 col-md-4 col-xs-12 col-sm-12 text-center">
+          <!-- <button mat-stroked-button>Details</button> -->
+          <button mat-button color="primary" (click)="editRole(role)">Edit</button>
+          <!-- <button mat-stroked-button>Remove</button> -->
+        </div>
+      </div>
+</div>
+
+
+<!-- Add Role Form -->
+
+<div *ngIf="bShowNewRoleForm" class="container">
+  <mat-card>
+    <mat-card-header>
+      <mat-card-title>
+        Create New Role
+        <button type="button" id="close-button" aria-label="Close" color="accent" title="Close" mat-icon-button
+          (click)="hideNewRoleForm()">
+          <mat-icon>close</mat-icon>
+        </button>
+      </mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <form [formGroup]="newRoleForm">
+        <div class="row">
+          <mat-form-field class="offset-lg-4 offset-md-4 col-lg-4 col-md-4 col-sm-12 col-xs-12">
+            <mat-label>Role Name</mat-label>
+            <input matInput type="text" formControlName="role_name" />
+          </mat-form-field>
+        </div>
+
+        <h6 class="text-center">Modules and Permission</h6>
+        <div class="row module-row">
+          <div class="offset-xl-3 offset-md-3 col-xl-3 col-md-3 col-sm-12 col-xs-12 text-center module-name">Staff</div>
+            <mat-form-field class="col-xl-3 col-md-3 col-sm-12 col-xs-12">
+              <mat-label>Permission</mat-label>
+              <mat-select formControlName="permission_staff">
+                <mat-option value="0"> Disable </mat-option>
+                <mat-option value="1"> Read </mat-option>
+                <mat-option value="2"> Write </mat-option>
+              </mat-select>
+            </mat-form-field>
+        </div>
+        <div class="row module-row">
+          <div class="offset-xl-3 offset-md-3 col-xl-3 col-md-3 col-sm-12 col-xs-12 text-center module-name">Student</div>
+            <mat-form-field class="col-xl-3 col-md-3 col-sm-12 col-xs-12">
+              <mat-label>Permission</mat-label>
+              <mat-select formControlName="permission_student">
+                <mat-option value="0"> Disable </mat-option>
+                <mat-option value="1"> Read </mat-option>
+                <mat-option value="2"> Write </mat-option>
+              </mat-select>
+            </mat-form-field>
+        </div>
+        <div class="row module-row">
+          <div class="offset-xl-3 offset-md-3 col-xl-3 col-md-3 col-sm-12 col-xs-12 text-center module-name">Academics</div>
+            <mat-form-field class="col-xl-3 col-md-3 col-sm-12 col-xs-12">
+              <mat-label>Permission</mat-label>
+              <mat-select formControlName="permission_academics">
+                <mat-option value="0"> Disable </mat-option>
+                <mat-option value="1"> Read </mat-option>
+                <mat-option value="2"> Write </mat-option>
+              </mat-select>
+            </mat-form-field>
+        </div>
+        <div class="row module-row">
+          <div class="offset-xl-3 offset-md-3 col-xl-3 col-md-3 col-sm-12 col-xs-12 text-center module-name">Policy</div>
+         <mat-form-field class="col-xl-3 col-md-3 col-sm-12 col-xs-12">
+              <mat-label>Permission</mat-label>
+              <mat-select formControlName="permission_policy">
+                <mat-option value="0"> Disable </mat-option>
+                <mat-option value="1"> Read </mat-option>
+                <mat-option value="2"> Write </mat-option>
+              </mat-select>
+            </mat-form-field>
+        </div>
+        <div class="row module-row">
+          <div class="offset-xl-3 offset-md-3 col-xl-3 col-md-3 col-sm-12 col-xs-12 text-center module-name">Notice</div>
+          <mat-form-field class="col-xl-3 col-md-3 col-sm-12 col-xs-12">
+            <mat-label>Permission</mat-label>
+            <mat-select formControlName="permission_notice">
+              <mat-option value="0"> Disable </mat-option>
+              <mat-option value="1"> Read </mat-option>
+              <mat-option value="2"> Write </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+        <div class="row module-row">
+          <div class="offset-xl-3 offset-md-3 col-xl-3 col-md-3 col-sm-12 col-xs-12 text-center module-name">Library</div>
+          <mat-form-field class="col-xl-3 col-md-3 col-sm-12 col-xs-12">
+            <mat-label>Permission</mat-label>
+            <mat-select formControlName="permission_library">
+              <mat-option value="0"> Disable </mat-option>
+              <!-- <mat-option value="1"> Read </mat-option> -->
+              <mat-option value="2"> Write </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+        <div class="row module-row">
+          <div class="offset-xl-3 offset-md-3 col-xl-3 col-md-3 col-sm-12 col-xs-12 text-center module-name">User Management</div>
+          <mat-form-field class="col-xl-3 col-md-3 col-sm-12 col-xs-12">
+            <mat-label>Permission</mat-label>
+            <mat-select formControlName="permission_usermanagement">
+              <mat-option value="0"> Disable </mat-option>
+              <!-- <mat-option value="1"> Read </mat-option> -->
+              <mat-option value="2"> Write </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+        <div class="row module-row">
+          <div class="offset-xl-3 offset-md-3 col-xl-3 col-md-3 col-sm-12 col-xs-12 text-center module-name">Student Enquiry</div>
+          <mat-form-field class="col-xl-3 col-md-3 col-sm-12 col-xs-12">
+            <mat-label>Permission</mat-label>
+            <mat-select formControlName="permission_studentenquiry">
+              <mat-option value="0"> Disable </mat-option>
+              <mat-option value="1"> Read </mat-option>
+              <mat-option value="2"> Write </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+      </form>
+
+    </mat-card-content>
+
+    <mat-card-actions align="end">
+      <button mat-button [disabled]="newRoleForm.invalid" (click)="onSaveRole()">Save</button>
+    </mat-card-actions>
+  </mat-card>
+  <br>
+</div>
+
+
+
+
+
+<!-- Edit Role Form -->
+
+<div *ngIf="bShowEditRoleForm" class="container">
+  <mat-card>
+    <mat-card-header>
+      <mat-card-title>
+        Edit Role
+        <button type="button" id="close-button" aria-label="Close" color="accent" title="Close" mat-icon-button
+          (click)="hideEditRoleForm()">
+          <mat-icon>close</mat-icon>
+        </button>
+      </mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <form [formGroup]="editRoleForm">
+        <div class="row">
+          <mat-form-field class="offset-lg-4 offset-md-4 col-lg-4 col-md-4 col-sm-12 col-xs-12">
+            <mat-label>Role Name</mat-label>
+            <input matInput type="text" formControlName="role_name" />
+          </mat-form-field>
+        </div>
+
+        <h6 class="text-center">Modules and Permission</h6>
+        <div class="row module-row">
+          <div class="offset-xl-3 offset-md-3 col-xl-3 col-md-3 col-sm-12 col-xs-12 text-center module-name">Staff</div>
+            <mat-form-field class="col-xl-3 col-md-3 col-sm-12 col-xs-12">
+              <mat-label>Permission</mat-label>
+              <mat-select formControlName="permission_staff">
+                <mat-option value="0"> Disable </mat-option>
+                <mat-option value="1"> Read </mat-option>
+                <mat-option value="2"> Write </mat-option>
+              </mat-select>
+            </mat-form-field>
+        </div>
+        <div class="row module-row">
+          <div class="offset-xl-3 offset-md-3 col-xl-3 col-md-3 col-sm-12 col-xs-12 text-center module-name">Student</div>
+            <mat-form-field class="col-xl-3 col-md-3 col-sm-12 col-xs-12">
+              <mat-label>Permission</mat-label>
+              <mat-select formControlName="permission_student">
+                <mat-option value="0"> Disable </mat-option>
+                <mat-option value="1"> Read </mat-option>
+                <mat-option value="2"> Write </mat-option>
+              </mat-select>
+            </mat-form-field>
+        </div>
+        <div class="row module-row">
+          <div class="offset-xl-3 offset-md-3 col-xl-3 col-md-3 col-sm-12 col-xs-12 text-center module-name">Academics</div>
+            <mat-form-field class="col-xl-3 col-md-3 col-sm-12 col-xs-12">
+              <mat-label>Permission</mat-label>
+              <mat-select formControlName="permission_academics">
+                <mat-option value="0"> Disable </mat-option>
+                <mat-option value="1"> Read </mat-option>
+                <mat-option value="2"> Write </mat-option>
+              </mat-select>
+            </mat-form-field>
+        </div>
+        <div class="row module-row">
+          <div class="offset-xl-3 offset-md-3 col-xl-3 col-md-3 col-sm-12 col-xs-12 text-center module-name">Policy</div>
+         <mat-form-field class="col-xl-3 col-md-3 col-sm-12 col-xs-12">
+              <mat-label>Permission</mat-label>
+              <mat-select formControlName="permission_policy">
+                <mat-option value="0"> Disable </mat-option>
+                <mat-option value="1"> Read </mat-option>
+                <mat-option value="2"> Write </mat-option>
+              </mat-select>
+            </mat-form-field>
+        </div>
+        <div class="row module-row">
+          <div class="offset-xl-3 offset-md-3 col-xl-3 col-md-3 col-sm-12 col-xs-12 text-center module-name">Notice</div>
+          <mat-form-field class="col-xl-3 col-md-3 col-sm-12 col-xs-12">
+            <mat-label>Permission</mat-label>
+            <mat-select formControlName="permission_notice">
+              <mat-option value="0"> Disable </mat-option>
+              <mat-option value="1"> Read </mat-option>
+              <mat-option value="2"> Write </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+        <div class="row module-row">
+          <div class="offset-xl-3 offset-md-3 col-xl-3 col-md-3 col-sm-12 col-xs-12 text-center module-name">Library</div>
+          <mat-form-field class="col-xl-3 col-md-3 col-sm-12 col-xs-12">
+            <mat-label>Permission</mat-label>
+            <mat-select formControlName="permission_library">
+              <mat-option value="0"> Disable </mat-option>
+              <!-- <mat-option value="1"> Read </mat-option> -->
+              <mat-option value="2"> Write </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+        <div class="row module-row">
+          <div class="offset-xl-3 offset-md-3 col-xl-3 col-md-3 col-sm-12 col-xs-12 text-center module-name">User Management</div>
+          <mat-form-field class="col-xl-3 col-md-3 col-sm-12 col-xs-12">
+            <mat-label>Permission</mat-label>
+            <mat-select formControlName="permission_usermanagement">
+              <mat-option value="0"> Disable </mat-option>
+              <!-- <mat-option value="1"> Read </mat-option> -->
+              <mat-option value="2"> Write </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+        <div class="row module-row">
+          <div class="offset-xl-3 offset-md-3 col-xl-3 col-md-3 col-sm-12 col-xs-12 text-center module-name">Student Enquiry</div>
+          <mat-form-field class="col-xl-3 col-md-3 col-sm-12 col-xs-12">
+            <mat-label>Permission</mat-label>
+            <mat-select formControlName="permission_studentenquiry">
+              <mat-option value="0"> Disable </mat-option>
+              <mat-option value="1"> Read </mat-option>
+              <mat-option value="2"> Write </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+      </form>
+    </mat-card-content>
+    <mat-card-actions align="end">
+      <button mat-button [disabled]="editRoleForm.invalid" color="primary" (click)="onUpdateRole()">Update</button>
+    </mat-card-actions>
+    </mat-card>
+    <br>
+</div>

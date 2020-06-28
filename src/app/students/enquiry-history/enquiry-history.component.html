@@ -1,0 +1,228 @@
+<div class="container">
+    <br>
+
+    <div *ngIf="bShowEnquiryList">
+        <h5 class="text-center">Enquiry List</h5>
+        <div *ngIf="enquiries.length == 0" class="text-center">
+            <p>{{message}}</p>
+        </div>
+        <br>
+        <div *ngIf="enquiries.length > 0">
+            <div class="enquiry-box" *ngFor="let enquiry of enquiries">
+                <div class="row">
+                    <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
+                        <p><strong>Student Name: </strong> {{enquiry.student_name}}</p>
+                    </div>
+    
+                    <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
+                        <p><strong>Mobile: </strong> {{enquiry.student_mobile}}</p>
+                    </div>
+                    <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
+                        <p><strong>Email: </strong>{{enquiry.student_email}}</p>
+                    </div>
+                    <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
+                        <p><strong>Course: </strong> {{enquiry.course}}</p>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
+                        <p><strong>Batch: </strong> {{enquiry.batch}}</p>
+                    </div>
+                    <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
+                        <p><strong>Queried By: </strong> {{enquiry.created_by}}</p>
+                    </div>
+                    <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
+                        <p><strong>Quiered On: </strong> {{enquiry.created_on | date:'dd-MMM-yyyy'}}</p>
+                    </div>
+                    <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12 text-center">
+                        <button mat-button color="primary" (click)="onDetail(enquiry.id_enquiry)">Details</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+
+
+
+
+    <mat-card *ngIf="bShowEnquiryDetail">
+        <mat-card-header>
+            <mat-card-title>
+                <button type="button" id="close-button" aria-label="Close" color="accent" title="Close" mat-icon-button
+                    (click)="hideEnquiryDetail()">
+                    <mat-icon>close</mat-icon>
+                </button>
+            </mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+            <h6 class="text-center"> Enquiry Details</h6>
+            <div class="row">
+                <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
+                    <p><strong>Enquiry ID : </strong>{{showingEnquiry.enquiry.id_enquiry}}</p>
+                </div>
+                <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
+                    <p><strong>Student Name : </strong>{{showingEnquiry.enquiry.student_name}}</p>
+                </div>
+                <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
+                    <p><strong>Course : </strong>{{showingEnquiry.enquiry.course}}</p>
+                </div>
+                <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
+                    <p><strong>Batch : </strong>{{showingEnquiry.enquiry.batch}}</p>
+                </div>
+            </div>
+
+            <div class="row">                
+                <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
+                    <p><strong>Phone : </strong>{{showingEnquiry.enquiry.student_mobile}}</p>
+                </div>
+                <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
+                    <p><strong>Email : </strong>{{showingEnquiry.enquiry.student_email}}</p>
+                </div>
+                <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
+                    <p><strong>Source : </strong>{{showingEnquiry.enquiry.information_source}}</p>
+                </div>
+                <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
+                    <p><strong>Remarks : </strong>{{showingEnquiry.enquiry.remarks}}</p>
+                </div>
+            </div>
+
+            <div class="row">      
+                <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
+                    <p><strong>Created By : </strong>{{showingEnquiry.enquiry.created_by}}</p>
+                </div>          
+                <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
+                    <p><strong>Created On : </strong>{{showingEnquiry.enquiry.created_on | date:'dd-MMM-yyyy'}}</p>
+                </div>
+                <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
+                    <p><strong>Modified By : </strong>{{showingEnquiry.enquiry.modified_by}}</p>
+                </div>
+                <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
+                    <p><strong>Modified On : </strong>{{showingEnquiry.enquiry.modified_on | date:'dd-MMM-yyyy'}}</p>
+                </div>                
+            </div>
+
+            <div class="text-center">
+                <button *ngIf="perm.permission_studentenquiry >= 2" mat-button color="primary" title="Edit Enquiry" (click)="onEdit()">Edit</button>
+                <button *ngIf="perm.permission_studentenquiry >= 2" mat-button color="warn" title="Delete Enquiry" (click)="onDelete()">Delete</button>
+            </div>
+            <div *ngIf="showingEnquiry.communications.length > 0">
+                <h6 class="text-center"> Communication Details</h6>
+                <div class="row communication-detail" *ngFor="let communication of showingEnquiry.communications; let i = index">
+                    <div class="col-lg-9 col-md-9 col-sm-12 col-xs-12">
+                        <p><strong>Query {{i+1}} : </strong> {{communication.comm_message}} </p>
+                    </div>
+                    
+                    <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
+                        <p><strong>Queried By : </strong> {{communication.comm_by}} </p>
+                        <p><strong>Query Date : </strong> {{communication.comm_date | date:'dd-MMM-yyyy'}} </p>
+                    </div>
+                </div>
+            </div>
+
+        </mat-card-content>
+    </mat-card>
+
+
+
+
+
+    <mat-card *ngIf="bShowEnquiryEdit && perm.permission_studentenquiry >= 2">
+        <mat-card-header>
+            <mat-card-title>
+                <button type="button" id="close-button" aria-label="Close" color="accent" title="Close" mat-icon-button
+                    (click)="hideEnquiryEdit()">
+                    <mat-icon>close</mat-icon>
+                </button>
+            </mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+            <h6 class="text-center">Edit Enquiry Details</h6>
+            <form [formGroup]="edit_enquiry_form">
+                <div class="row">
+            
+                  <mat-form-field class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
+                    <mat-label>Student Name</mat-label>
+                    <input matInput formControlName="student_name" />
+                  </mat-form-field>
+            
+            
+                  <mat-form-field class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
+                    <mat-label>Course</mat-label>
+                    <mat-select formControlName="course" (selectionChange)="onCourseChange()">
+                      <mat-option *ngFor="let course of courses" [value]="course.id_course">{{course.name}}</mat-option>
+                    </mat-select>
+                  </mat-form-field>
+            
+            
+                  <mat-form-field class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
+                    <mat-label>Batch</mat-label>
+                    <mat-select formControlName="batch">
+                      <mat-option *ngFor="let batch of formBoundBatches" [value]="batch.id_batch">{{batch.batch_name}}</mat-option>
+                    </mat-select>
+                  </mat-form-field>
+            
+                </div>
+            
+                <div class="row">
+            
+                  <mat-form-field class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+                    <mat-label>Mobile Number</mat-label>
+                    <input matInput formControlName="mobile" />
+                  </mat-form-field>
+            
+                  <mat-form-field class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+                    <mat-label>Email</mat-label>
+                    <input matInput formControlName="email" />
+                  </mat-form-field>
+            
+            
+                  <mat-form-field class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+                    <mat-label>Source of information</mat-label>
+                    <input matInput formControlName="source_of_info" />
+                  </mat-form-field>
+            
+            
+                  <mat-form-field class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+                    <mat-label>Remarks</mat-label>
+                    <textarea matInput formControlName="remarks"></textarea>
+                  </mat-form-field>
+            
+                </div>
+            
+            
+              <div formArrayName="communications">
+                <div class="row" [formGroupName]="i"
+                  *ngFor="let item of edit_enquiry_form.get('communications')['controls']; let i = index">
+          
+                    <mat-form-field class="col-lg-2 col-md-2 col-sm-12 col-xs-12">
+                      <mat-label>Date</mat-label>
+                      <input matInput [matDatepicker]="picker" formControlName="date">
+                      <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                      <mat-datepicker #picker></mat-datepicker>
+                    </mat-form-field>
+            
+                    <mat-form-field class="col-lg-8 col-md-8 col-sm-12 col-xs-12">
+                      <mat-label>Message</mat-label>
+                      <input matInput formControlName="message">
+                    </mat-form-field>
+          
+                  <div class="col-lg-2 col-md-2 col-sm-12 col-xs-12">
+                    <button color="warn" mat-button title="Delete Row" (click)="delete_communications_row(i)">
+                      Remove
+                    </button>
+                  </div>
+            
+                </div>
+              </div>
+            
+              <div *ngIf="perm.permission_studentenquiry >= 2" class="fourthline">
+                <button mat-button color="primary" title="Add Rows" type="button" (click)="add_communications_row()">Add Communication</button>
+                <button mat-button color="primary" title="Save Details" type="button" (click)="update()">Update</button>
+              </div>
+            </form>
+        </mat-card-content>
+
+    </mat-card>
+    <br>
+</div>

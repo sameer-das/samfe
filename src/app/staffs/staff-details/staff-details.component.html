@@ -1,0 +1,228 @@
+<br>
+<div *ngIf="bShowStaffList && perm.permission_staff >= 1">
+  <h6 *ngIf="!staffs.length" class="text-center">No Staffs Found</h6>
+  <table *ngIf="staffs.length" class="table">
+    <thead>
+      <tr>
+        <th scope="col">Staff ID</th>
+        <th scope="col">Name</th>
+        <th scope="col">Department</th>
+        <th scope="col">Designation</th>
+        <th scope="col">Contact</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let staff of staffs; let i = index">
+        <td><span id="staff_id" (click)="showStaffDetails(staff)"> {{staff.staff_id}} </span> </td>
+        <td> {{staff.name}} </td>
+        <td> {{staff.department_name ? staff.department_name : 'Unasigned' }} </td>
+        <td> {{staff.designation_name ? staff.designation_name : 'Unasigned'}} </td>
+        <td> {{staff.mobile}} </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+
+
+
+
+<mat-card *ngIf="bShowStaffDetails" class="container">
+  <mat-card-header>
+    <mat-card-title> {{showingStaff.name}} ({{showingStaff.staff_id}}) </mat-card-title>
+    <button type="button" *ngIf="bShowStudentDetailCloseButton" id="close-button" aria-label="Close" color="accent" title="Close" mat-icon-button
+        (click)="hideStaffDetails()">
+        <mat-icon>close</mat-icon>
+      </button>
+  </mat-card-header>
+  <mat-card-content>
+    <div class="row">
+      <div class="text-center box1 col-md-4 col-sm-12 col-xs-12">
+        <img class="img-thumbnail" alt="avatar" [src]="avatarLink">
+        
+      </div>
+      <div class="box2 col-md-8 col-sm-12 col-xs-12">
+        <strong>Details</strong>
+        <ul>
+          <li *ngIf="showingStaff.designation_name">{{showingStaff.designation_name}}</li>
+          <li *ngIf="showingStaff.department_name">{{showingStaff.department_name}}</li>
+          <li *ngIf="showingStaff.mobile">{{showingStaff.mobile}}</li>
+          <li *ngIf="showingStaff.emergency_contact">{{showingStaff.emergency_contact}}</li>
+          <li>{{showingStaff.email}}</li>
+        </ul>
+        
+        <div class="button-div">
+          <button *ngIf="perm.permission_staff >= 2" type="button" aria-label="Edit Details" title="Edit Details" mat-mini-fab color="primary"
+            (click)="openEditStaffDetailPopup()">
+            <mat-icon>edit</mat-icon>
+          </button>
+          <button *ngIf="perm.permission_staff >= 2" type="button" aria-label="Document Upload" title="Document Upload" mat-mini-fab
+            (click)="showDocumentUpload()">
+            <mat-icon>cloud_upload</mat-icon>
+          </button>
+          <!-- <button type="button" aria-label="Add Payment" title="Payment" mat-mini-fab
+            (click)="showAddPayment()">
+            <mat-icon>payment</mat-icon>
+          </button> -->
+        </div>
+
+      </div>
+    </div>
+    <br>
+    <mat-accordion>
+      <mat-expansion-panel>
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            Addresses
+          </mat-panel-title>
+        </mat-expansion-panel-header>
+        <div class="row">
+          <div class="col-md-6 col-sm-6 col-xs-12">
+            <strong>Current Address</strong>
+            <p>{{showingStaff.current_address}}</p>
+          </div>
+          <div class="col-md-6 col-sm-6 col-xs-12">
+            <strong>Permanent Address</strong>
+            <p>{{showingStaff.permanent_address}}</p>
+          </div>
+        </div>
+      </mat-expansion-panel>
+
+      <mat-expansion-panel>
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            Personal Details
+          </mat-panel-title>
+        </mat-expansion-panel-header>
+        <div class="row">
+          <div class="col-md-6 col-sm-12">
+            <ul>
+              <li>Gender : {{get_gender(showingStaff.gender)}}</li>
+              <li> Date of Birth : {{showingStaff.dob | date:'dd-MMM-yyyy'}}</li>
+              <li *ngIf="showingStaff.doj"> Date of Joining : {{showingStaff.doj | date:'dd-MMM-yyyy'}}</li>
+            </ul>
+          </div>
+          <div class="col-md-6 col-sm-12">
+            <ul>
+              <li *ngIf="showingStaff.married">Spouse : {{showingStaff.spouse_detail}}</li>
+              <li> Blood Group : {{showingStaff.bloodgroup}}</li>
+              <li title="Past Medical History"> PMH : {{showingStaff.past_med_history}}</li>
+            </ul>
+          </div>
+        </div>
+      </mat-expansion-panel>
+
+      <mat-expansion-panel (opened)="loadCourses()">
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+           Course Details
+          </mat-panel-title>
+        </mat-expansion-panel-header>
+        <div class="row">
+          <div class="col-md-6 col-sm-12">
+            <ul>
+              <li *ngFor="let course of showingCourses">{{course.course_name}} ({{course.department_name}})</li>
+            </ul>
+          </div>
+        </div>
+      </mat-expansion-panel>
+
+
+      <mat-expansion-panel (opened)="loadDocuments()">
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            Documents
+          </mat-panel-title>
+        </mat-expansion-panel-header>
+
+        <div class="container">
+          <p class="text-center" *ngIf="!showingDocuments.length">No documents found!</p>
+          <table *ngIf="showingDocuments.length" class="table">
+            <thead>
+              <tr>
+                <th scope="col">#</th>
+                <th scope="col">Doc Name</th>
+                <th scope="col">File Name</th>
+                <th scope="col">Type</th>
+                <th scope="col">Size</th>
+                <th scope="col">Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let document of showingDocuments; let i = index">
+                <th scope="row"> {{i+1}} </th>
+                <td> {{document.identifier}} </td>
+                <td> {{document.originalname}} </td>
+                <td> {{document.mimetype.split('/')[1] | uppercase}} </td>
+                <td> {{convert_to_kb(document.size)}} KB</td>
+                <td>
+                  <mat-icon class="download_icon" (click)="download(document.uniqid)">save_alt</mat-icon>
+                  <mat-icon *ngIf="perm.permission_staff >= 2" class="remove_icon">delete</mat-icon>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+      </mat-expansion-panel>
+    </mat-accordion>
+  </mat-card-content>
+  <!-- <mat-card-actions align="end">
+    <button type="button" mat-button (click)="showDocumentUpload()"> Upload Documents </button>
+    <button type="button" mat-button color="primary" (click)="openEditStaffDetailPopup()"> Edit Details</button>
+    <button type="button" mat-button color="accent" (click)="hideStaffDetails()"> Close</button>
+  </mat-card-actions> -->
+</mat-card>
+
+
+
+
+
+
+
+
+
+
+
+<div *ngIf="bShowDocumentUpload && perm.permission_staff >= 2" class="container">
+  <mat-card>
+    <mat-card-header>
+      <mat-card-title> Upload for {{showingStaff.name}} ({{showingStaff.staff_id | uppercase}}) </mat-card-title>
+      <button type="button" id="close-button" aria-label="Close" color="warn" title="Close" mat-icon-button
+        (click)="hideDocumentUpload()">
+        <mat-icon>close</mat-icon>
+      </button>
+    </mat-card-header>
+
+    <mat-card-content>
+      <div class="offset-md-3 col-md-6 col-sm-12 col-xs-12">
+      <div class="parent-div">
+          <div class="upload-form">
+            <form #f="ngForm">
+              <mat-slide-toggle color="primary" [checked]="isProfilePic" (change)="onSliderChange($event)">Upload Avatar</mat-slide-toggle>
+              <div *ngIf="!isProfilePic" class="form-group">
+                <label for="filename"></label>
+                <input class="form-control" [(ngModel)]="filename" name="filename" type="text" id="filename"
+                  placeholder="File Name">
+              </div>
+    
+              <div class="form-group">
+                <label for="file">Select only <span *ngIf="!isProfilePic">PDF </span> <span *ngIf="isProfilePic">JPEG/PNG </span>files</label>
+                <input #fileinput name="{{filename}}" [disabled]="!(filename || isProfilePic)" (change)="onFileChange($event,f)"
+                  class="form-control-file" type="file" id="file">
+              </div>
+              <div class="form-group text-center">
+                <button *ngIf="perm.permission_staff >= 2" type="button" color="primary" [disabled]="!(filename || isProfilePic)" class="btn col-md-3 col-sm-3 col-xs-12"
+                  mat-stroked-button (click)="uploadFile()"> Upload</button>
+                <button type="button" [disabled]="!(filename || isProfilePic)" color="primary" class="btn col-md-3 col-sm-3 col-xs-12"
+                  mat-stroked-button (click)="clear(f)"> Clear</button>
+                <!-- <button type="button" color="primary" class="btn col-md-3 col-sm-3 col-xs-12" mat-stroked-button
+                  (click)="hideDocumentUpload()"> Cancel</button> -->
+              </div>
+            </form>
+          </div>    
+        </div>
+      </div>
+    </mat-card-content>
+  </mat-card>
+</div>

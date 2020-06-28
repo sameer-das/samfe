@@ -1,0 +1,36 @@
+mat-sidenav-container {
+  height: 100vh;
+}
+
+mat-sidenav,
+mat-sidenav-content {
+  padding: 0 4px;
+}
+
+mat-sidenav {
+  background-color: #fff;
+  width: 200px;
+}
+
+.navbar {
+  justify-content: space-between;
+}
+.navbar span {
+  padding-right: 1rem;
+}
+
+div.sideMenuToggler {
+  cursor: pointer;
+}
+
+a.logout {
+  text-decoration: none;
+  color: white;
+}
+a.logout:hover {
+  color: #ffd740;
+}
+
+mat-toolbar {
+  height: 10%;
+}

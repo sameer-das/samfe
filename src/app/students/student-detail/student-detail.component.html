@@ -1,0 +1,621 @@
+<!-- <div>
+  <div style="text-align: center;" class="mat-title">
+    Student Details
+    <div>
+        <input type="text">
+    </div>
+  </div>
+</div> -->
+
+<button mat-button type="button" *ngIf="bShowStudentList && perm.permission_student == 2 " (click)="showCreateStudentForm()">New Student</button>
+
+<br>
+<div *ngIf="bShowStudentList && perm.permission_student >= 1" class="container">
+  <p class="text-center" *ngIf="!students.length">No Students found, Please create new!</p>
+  <table *ngIf="students.length" class="table">
+    <thead>
+      <tr>
+        <th scope="col">Student ID</th>
+        <th scope="col">Name</th>
+        <th scope="col">Phone</th>
+        <th scope="col">Email</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let student of students; let i = index">
+        <td> <span id="student_id" title="Click for Details" (click)="showStudentDetails(student.student_id)">
+            {{student.student_id | uppercase}} </span> </td>
+        <td> {{student.name}} </td>
+        <td> {{student.phone}} </td>
+        <td> {{student.email_p}} </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+
+
+<div *ngIf="bShowCreateStudentForm && perm.permission_student == 2">
+  <mat-card>
+    <mat-card-title>Create New Student</mat-card-title>
+    <mat-card-content>
+      <form [formGroup]="createStudentForm">
+        <div class="row">
+          <mat-form-field class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
+            <mat-label>Student Id</mat-label>
+            <input matInput type="text" required formControlName="student_id" />
+          </mat-form-field>
+          <mat-form-field class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
+            <mat-label>Name</mat-label>
+            <input matInput type="text" required formControlName="name" />
+          </mat-form-field>
+          <mat-form-field class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
+            <mat-label>Gender</mat-label>
+            <mat-select required formControlName="gender">
+              <mat-option value="m">Male</mat-option>
+              <mat-option value="f">Female</mat-option>
+              <mat-option value="o">Other</mat-option>
+            </mat-select>
+          </mat-form-field>
+          <mat-form-field class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
+            <mat-label>Blood Group</mat-label>
+            <mat-select required formControlName="bloodgroup">
+              <mat-option value="A+">A+</mat-option>
+              <mat-option value="A-">A-</mat-option>
+              <mat-option value="B+">B+</mat-option>
+              <mat-option value="B-">B-</mat-option>
+              <mat-option value="O+">O+</mat-option>
+              <mat-option value="O-">O-</mat-option>
+              <mat-option value="AB+">AB+</mat-option>
+              <mat-option value="AB-">AB-</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+
+        <div class="row">
+          <mat-form-field class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
+            <mat-label>Date of Birth</mat-label>
+            <input matInput [matDatepicker]="picker" formControlName="dob" readonly required>
+            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+            <mat-datepicker #picker></mat-datepicker>
+          </mat-form-field>
+
+          <mat-form-field class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
+            <mat-label>Date of Joining</mat-label>
+            <input matInput [matDatepicker]="picker1" formControlName="doj" readonly required>
+            <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+            <mat-datepicker #picker1></mat-datepicker>
+          </mat-form-field>
+
+          <mat-form-field class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
+            <mat-label>Nationality</mat-label>
+            <input matInput type="text" formControlName="nationality" required />
+          </mat-form-field>
+        </div>
+
+        <div class="row">
+          <mat-form-field class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
+            <mat-label>Phone</mat-label>
+            <input matInput type="text" formControlName="phone" maxlength="10" required />
+          </mat-form-field>
+
+          <mat-form-field class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
+            <mat-label>Personal Email</mat-label>
+            <input matInput type="email" formControlName="email_p" />
+          </mat-form-field>
+
+          <mat-form-field class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
+            <mat-label>Permanent Address</mat-label>
+            <textarea formControlName="permanent_address" matInput required></textarea>
+          </mat-form-field>
+
+          <mat-form-field class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
+            <mat-label>Current Address</mat-label>
+            <textarea formControlName="current_address" matInput required></textarea>
+          </mat-form-field>
+        </div>
+
+      </form>
+    </mat-card-content>
+    <mat-card-actions align="end">
+      <button mat-raised-button color="primary" [disabled]="createStudentForm.invalid" (click)="onSaveStudent()"> Save
+      </button>
+      <button mat-raised-button color="accent" (click)="clearForm()"> Clear </button>
+      <button mat-raised-button color="warning" (click)="hideCreateStudentForm()"> Close </button>
+    </mat-card-actions>
+  </mat-card>
+  <br>
+</div>
+
+
+
+
+<!--Single Student Details -->
+
+<mat-card *ngIf="bShowStudentDetails" class="container">
+  <mat-card-header>
+    <mat-card-title> {{showingStudent.name}} ({{showingStudent.student_id | uppercase}}) </mat-card-title>
+    <button *ngIf="bShowStudentDetailCloseButton" type="button" id="close-button" aria-label="Close" color="accent" title="Close" mat-icon-button
+      (click)="hideStudentDetails()">
+      <mat-icon>close</mat-icon>
+    </button>
+  </mat-card-header>
+  <mat-card-content>
+    <div class="row">
+      <div class="text-center box1 col-md-4 col-sm-12 col-xs-12">
+        <img class="img-thumbnail" alt="avatar" [src]="avatarLink">
+      </div>
+      <div class="box2 col-md-8 col-sm-12 col-xs-12">
+        <strong>Details</strong>
+        <ul>
+          <li *ngIf="showingStudent.phone">{{showingStudent.phone}}</li>
+          <li *ngIf="showingStudent.email_p">{{showingStudent.email_p}}</li>
+          <li *ngIf="showingStudent.email_o">{{showingStudent.email_o}}</li>
+        </ul>
+
+        <div class="button-div">
+          <button *ngIf="perm.permission_student == 2" type="button" aria-label="Edit Details" title="Edit Details" mat-mini-fab color="primary"
+            (click)="showEditForm()">
+            <mat-icon>edit</mat-icon>
+          </button>
+          <button *ngIf="perm.permission_student == 2" type="button" aria-label="Document Upload" title="Document Upload" mat-mini-fab
+            (click)="showDocumentUpload()">
+            <mat-icon>cloud_upload</mat-icon>
+          </button>
+          <button type="button" aria-label="Add Payment" title="Payment" mat-mini-fab (click)="showAddPayment()">
+            <mat-icon>payment</mat-icon>
+          </button>
+        </div>
+      </div>
+    </div>
+    <br>
+    <mat-accordion>
+      <mat-expansion-panel>
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            Addresses
+          </mat-panel-title>
+        </mat-expansion-panel-header>
+        <div class="row">
+          <div class="col-md-6 col-sm-6 col-xs-12">
+            <strong>Current Address</strong>
+            <p>{{showingStudent.current_address}}</p>
+          </div>
+          <div class="col-md-6 col-sm-6 col-xs-12">
+            <strong>Permanent Address</strong>
+            <p>{{showingStudent.permanent_address}}</p>
+          </div>
+        </div>
+      </mat-expansion-panel>
+
+      <mat-expansion-panel>
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            Personal Details
+          </mat-panel-title>
+        </mat-expansion-panel-header>
+        <div class="row">
+          <div class="col-md-6 col-sm-12">
+            <ul>
+              <li>Gender : {{get_gender(showingStudent.gender)}}</li>
+              <li> Blood Group : {{showingStudent.bloodgroup}}</li>
+
+            </ul>
+          </div>
+          <div class="col-md-6 col-sm-12">
+            <ul>
+              <li> Date of Birth : {{showingStudent.dob | date:'dd-MMM-yyyy'}}</li>
+              <li> Date of Joining : {{showingStudent.doj | date:'dd-MMM-yyyy'}}</li>
+
+            </ul>
+          </div>
+        </div>
+      </mat-expansion-panel>
+
+      <mat-expansion-panel>
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            Academic Details
+          </mat-panel-title>
+        </mat-expansion-panel-header>
+        <p *ngIf="showingStudentCourseDetails.length == 0" class="text-center">Student not mapped to any course or batch
+        </p>
+        <div *ngIf="showingStudentCourseDetails.length > 0" >
+          <div class="row" *ngFor="let mapping of showingStudentCourseDetails">
+            <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
+              <p><strong>Course: </strong> {{mapping.course_name}} </p>
+            </div>
+            <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
+              <p><strong>Batch: </strong> {{mapping.batch_name}} </p>
+            </div>
+            <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
+              <p><strong>Start Date: </strong> {{mapping.start_date | date:'dd-MMM-yyyy'}} </p>
+            </div>
+            <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
+              <p><strong>End Date: </strong> {{mapping.end_date | date:'dd-MMM-yyyy'}} </p>
+            </div>
+          </div>
+        </div>
+      </mat-expansion-panel>
+
+      <mat-expansion-panel (opened)="loadDocuments()">
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            Documents
+          </mat-panel-title>
+        </mat-expansion-panel-header>
+
+        <div class="container">
+          <p class="text-center" *ngIf="!showingDocuments.length">No documents found, Please upload!</p>
+          <table *ngIf="showingDocuments.length" class="table">
+            <thead>
+              <tr>
+                <th scope="col">#</th>
+                <th scope="col">Doc Name</th>
+                <th scope="col">File Name</th>
+                <th scope="col">Type</th>
+                <th scope="col">Size</th>
+                <th scope="col">Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let document of showingDocuments; let i = index">
+                <th scope="row"> {{i+1}} </th>
+                <td> {{document.identifier}} </td>
+                <td> {{document.originalname}} </td>
+                <td> {{document.mimetype.split('/')[1] | uppercase}} </td>
+                <td> {{convert_to_kb(document.size)}} KB</td>
+                <td>
+                  <mat-icon class="download_icon" (click)="download(document.uniqid)">save_alt</mat-icon>
+                  <mat-icon *ngIf="isAdmin" class="remove_icon">delete</mat-icon>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+      </mat-expansion-panel>
+    </mat-accordion>
+  </mat-card-content>
+  <!-- <mat-card-actions align="end">
+    <button type="button" mat-button color="primary" (click)="openEditStaffDetailPopup()"> Edit Details</button>
+    <button type="button" mat-button color="accent" (click)="hideStudentDetails()"> Close</button>
+  </mat-card-actions> -->
+</mat-card>
+
+
+
+
+
+
+
+<!-- Uploading -->
+
+<div class="container" *ngIf="bShowDocumentUpload" class="container">
+  <mat-card>
+    <mat-card-header>
+      <mat-card-title> Upload for {{showingStudent.name}} ({{showingStudent.student_id | uppercase}}) </mat-card-title>
+      <button type="button" id="close-button" aria-label="Close" color="warn" title="Close" mat-icon-button
+        (click)="hideDocumentUpload()">
+        <mat-icon>close</mat-icon>
+      </button>
+    </mat-card-header>
+
+    <mat-card-content>
+      <div class="offset-md-3 col-md-6 col-sm-12 col-xs-12">
+        <div class="parent-div">
+          <div class="upload-form">
+            <form #f="ngForm">
+              <mat-slide-toggle color="primary" [checked]="isProfilePic" (change)="onSliderChange($event)">Upload Avatar
+              </mat-slide-toggle>
+              <div *ngIf="!isProfilePic" class="form-group">
+                <label for="filename"></label>
+                <input class="form-control" [(ngModel)]="filename" name="filename" type="text" id="filename"
+                  placeholder="File Name">
+              </div>
+
+              <div class="form-group">
+                <label for="file">Select only <span *ngIf="!isProfilePic">PDF </span> <span
+                    *ngIf="isProfilePic">JPEG/PNG
+                  </span>files</label>
+                <input #fileinput name="{{filename}}" [disabled]="!(filename || isProfilePic)"
+                  (change)="onFileChange($event,f)" class="form-control-file" type="file" id="file">
+              </div>
+              <div class="form-group text-center">
+                <button type="button" color="primary" [disabled]="!(filename || isProfilePic)"
+                  class="btn col-md-3 col-sm-3 col-xs-12" mat-stroked-button (click)="uploadFile()"> Upload</button>
+                <button type="button" [disabled]="!(filename || isProfilePic)" color="primary"
+                  class="btn col-md-3 col-sm-3 col-xs-12" mat-stroked-button (click)="clear(f)"> Clear</button>
+                <!-- <button type="button" color="primary" class="btn col-md-3 col-sm-3 col-xs-12" mat-stroked-button
+                    (click)="hideDocumentUpload()"> Cancel</button> -->
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+
+    </mat-card-content>
+  </mat-card>
+  <br>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- EDIT FORM -->
+<div *ngIf="bShowEditForm && perm.permission_student == 2" class="container">
+  <mat-card>
+    <mat-card-header>
+      <button type="button" id="close-button" aria-label="Close" color="warn" title="Close" mat-icon-button
+        (click)="hideEditForm()">
+        <mat-icon>close</mat-icon>
+      </button>
+    </mat-card-header>
+    <br>
+    <mat-card-content>
+      <h6 class="text-center"> Edit Student Details </h6>
+      <br>
+      <form [formGroup]="editStudentForm">
+        <div class="row">
+          <mat-form-field class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
+            <mat-label>Student Id</mat-label>
+            <input matInput type="text" required formControlName="student_id" />
+          </mat-form-field>
+          <mat-form-field class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
+            <mat-label>Name</mat-label>
+            <input matInput type="text" required formControlName="name" />
+          </mat-form-field>
+          <mat-form-field class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
+            <mat-label>Gender</mat-label>
+            <mat-select required formControlName="gender">
+              <mat-option value="m">Male</mat-option>
+              <mat-option value="f">Female</mat-option>
+              <mat-option value="o">Other</mat-option>
+            </mat-select>
+          </mat-form-field>
+          <mat-form-field class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
+            <mat-label>Blood Group</mat-label>
+            <mat-select required formControlName="bloodgroup">
+              <mat-option value="A+">A+</mat-option>
+              <mat-option value="A-">A-</mat-option>
+              <mat-option value="B+">B+</mat-option>
+              <mat-option value="B-">B-</mat-option>
+              <mat-option value="O+">O+</mat-option>
+              <mat-option value="O-">O-</mat-option>
+              <mat-option value="AB+">AB+</mat-option>
+              <mat-option value="AB-">AB-</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+
+        <div class="row">
+          <mat-form-field class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
+            <mat-label>Date of Birth</mat-label>
+            <input matInput [matDatepicker]="picker" formControlName="dob" readonly required>
+            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+            <mat-datepicker #picker></mat-datepicker>
+          </mat-form-field>
+
+          <mat-form-field class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
+            <mat-label>Date of Joining</mat-label>
+            <input matInput [matDatepicker]="picker1" formControlName="doj" readonly required>
+            <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+            <mat-datepicker #picker1></mat-datepicker>
+          </mat-form-field>
+
+          <mat-form-field class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
+            <mat-label>Phone</mat-label>
+            <input matInput type="text" formControlName="phone" maxlength="10" required />
+          </mat-form-field>
+
+          <mat-form-field class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
+            <mat-label>Nationality</mat-label>
+            <input matInput type="text" formControlName="nationality" required />
+          </mat-form-field>
+        </div>
+
+        <div class="row">
+
+          <mat-form-field class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
+            <mat-label>Personal Email</mat-label>
+            <input matInput type="email" formControlName="email_p" />
+          </mat-form-field>
+
+          <mat-form-field class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
+            <mat-label>Office Email</mat-label>
+            <input matInput type="email" formControlName="email_o" />
+          </mat-form-field>
+
+          <mat-form-field class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
+            <mat-label>Permanent Address</mat-label>
+            <textarea formControlName="permanent_address" matInput required></textarea>
+          </mat-form-field>
+
+          <mat-form-field class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
+            <mat-label>Current Address</mat-label>
+            <textarea formControlName="current_address" matInput></textarea>
+          </mat-form-field>
+        </div>
+
+      </form>
+      <div class="text-center offset-lg-4 offset-md-4 col-lg-4 col-md-4 col-sm-12 col-xs-12">
+        <button mat-button color="primary" class="btn-block" [disabled]="editStudentForm.invalid"
+          (click)="updateStudent()">Update Personal Details</button>
+      </div>
+      <br>
+
+      <h6 class="text-center">Student Academic Details</h6>
+      <br>
+      <div *ngIf="showingStudentCourseDetails.length > 0">
+        <!-- <div class="row">
+          <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12"><strong> Course Name </strong></div>
+          <div class="col-lg-2 col-md-2 col-sm-12 col-xs-12"><strong> Batch  Name </strong></div>
+          <div class="col-lg-2 col-md-2 col-sm-12 col-xs-12"><strong> Start Date </strong></div>
+          <div class="col-lg-2 col-md-2 col-sm-12 col-xs-12"><strong> End Date </strong></div>
+        </div> -->
+        <div class="row" *ngFor="let mapping of showingStudentCourseDetails">
+          <div class="col-lg-2 col-md-2 col-sm-12 col-xs-12"> <strong>Course:</strong> {{mapping.course_name}} </div>
+          <div class="col-lg-2 col-md-2 col-sm-12 col-xs-12"> <strong>Batch:</strong> {{mapping.batch_name}} </div>
+          <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12"> <strong>Start Date:</strong> {{mapping.start_date | date:'dd-MMM-yyyy'}} </div>
+          <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12"> <strong>End Date:</strong> {{mapping.end_date | date:'dd-MMM-yyyy'}} </div>
+          <div class="col-lg-2 col-md-2 col-sm-12 col-xs-12 text-center">
+            <button mat-button color="warn" title="Remove Course Mapping" (click)="RemoveStudentCourseMapping(mapping.id_mapping_student_course)">Remove</button>
+          </div>
+        </div>
+      </div>
+
+      <br>
+      <form class="row" [formGroup]="student_academic_form">
+        <mat-form-field class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
+          <mat-label>Course</mat-label>
+          <mat-select (selectionChange)="onCourseChange(i, academic)" formControlName="course">
+            <mat-option *ngFor="let course of courses" [value]="course.id_course">{{course.name}} </mat-option>
+          </mat-select>
+        </mat-form-field>
+        <mat-form-field class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
+          <mat-label>Batch</mat-label>
+          <mat-select formControlName="batch">
+            <mat-option *ngFor="let bat of formBoundBatch" [value]="bat.id_batch"> {{bat.batch_name}} </mat-option>
+          </mat-select>
+        </mat-form-field>
+        <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12 text-center">
+          <button type="button" mat-button color="primary" (click)="AddStudentCourseMapping()">Add Course</button>
+        </div>
+      </form>
+
+    </mat-card-content>
+
+    <!-- <mat-card-actions class="text-center">
+      <button mat-raised-button color="accent" (click)="clearEditForm()">Clear</button>
+      <button mat-raised-button color="primary" [disabled]="editStudentForm.invalid"
+        (click)="updateStudent()">Update</button>
+    </mat-card-actions> -->
+  </mat-card>
+  <br>
+</div>
+
+
+<!-- Payment  option goes here -->
+
+<div *ngIf="bShowAddPayment" class="container">
+  <mat-card>
+    <mat-card-header>
+      <mat-card-title> Payment for {{showingStudent.name}} ({{showingStudent.student_id | uppercase}}) </mat-card-title>
+      <button type="button" id="close-button" aria-label="Close" color="accent" title="Close" mat-icon-button
+        (click)="hideAddPayment()">
+        <mat-icon>close</mat-icon>
+      </button>
+    </mat-card-header>
+
+    <mat-card-content>
+      <div *ngIf="!bShowPaymentForm">
+        <div *ngFor="let payment of studentPayment; let i = index" class="payment-details">
+          <div class="row">
+            <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
+              <p><strong>Transaction ID : </strong> {{payment.transaction_id}} </p>
+            </div>
+            <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
+              <p><strong>Invoice No : </strong>{{payment.invoice_no}}</p>
+            </div>
+            <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
+              <p><strong>Invoice Date : </strong>{{payment.payment_date | date:'dd-MMM-yyyy'}}</p>
+            </div>
+            <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
+              <p><strong>Added By : </strong>{{payment.created_by}}</p>
+            </div>
+          </div>
+          <div class="row">
+
+            <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
+              <p><strong>Amount : </strong>{{payment.payment_amount}} ({{payment.payment_unit }}) </p>
+            </div>
+            <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
+              <p><strong>Payment Method : </strong>{{payment.payment_mode}}</p>
+            </div>
+            <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
+              <p><strong>Added On : </strong>{{payment.created_on | date:'dd-MMM-yyyy'}}</p>
+            </div>
+            <div *ngIf="perm.permission_student == 2" class="col-lg-3 col-md-3 col-sm-12 col-xs-12 text-center payment-action">
+              <!-- <a (click)="edit_payment(payment)" >Edit</a> -->
+              <a title="Delete Payment" (click)="delete_payment(payment, i)">Delete</a>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+              <p><strong>Remarks : </strong>{{payment.remarks}} </p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+      <div *ngIf="bShowPaymentForm && perm.permission_student == 2">
+        <form [formGroup]="paymentForm">
+          <div class="row">
+            <mat-form-field class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
+              <mat-label>Transaction ID</mat-label>
+              <input matInput formControlName="transaction_id">
+            </mat-form-field>
+            <mat-form-field class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
+              <mat-label>Invoide No.</mat-label>
+              <input matInput required formControlName="invoice_no">
+            </mat-form-field>
+            <mat-form-field class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
+              <mat-label>Date of Invoice</mat-label>
+              <input matInput [matDatepicker]="picker3" formControlName="payment_date" readonly required>
+              <mat-datepicker-toggle matSuffix [for]="picker3"></mat-datepicker-toggle>
+              <mat-datepicker #picker3></mat-datepicker>
+            </mat-form-field>
+          </div>
+          <div class="row">
+            <mat-form-field class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
+              <mat-label>Payment Amount</mat-label>
+              <input matInput required formControlName="payment_amount">
+            </mat-form-field>
+            <mat-form-field class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
+              <mat-label>Payment Unit</mat-label>
+              <mat-select required formControlName="payment_unit">
+                <mat-option *ngFor="let unit of paymentunits" [value]="unit.id_payment_unit"> {{unit.payment_unit}}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+            <mat-form-field class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
+              <mat-label>Payment Mode</mat-label>
+              <mat-select required formControlName="payment_mode">
+                <mat-option *ngFor="let mode of paymentmodes" [value]="mode.id_payment_mode"> {{mode.payment_mode}}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+          <div class="row">
+            <mat-form-field class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+              <mat-label>Remarks</mat-label>
+              <input matInput required formControlName="remarks">
+            </mat-form-field>
+          </div>
+        </form>
+
+      </div>
+    </mat-card-content>
+    <mat-card-actions *ngIf="perm.permission_student == 2" align="end">
+      <button mat-button color="primary" *ngIf="!bShowPaymentForm" (click)="show_payment_form()">Add Payment</button>
+      <button mat-button color="primary" *ngIf="bShowPaymentForm" [disabled]="paymentForm.invalid"
+        (click)="save_payment()">Save Payment</button>
+      <button mat-button color="accent" *ngIf="bShowPaymentForm" (click)="clear_payment_form()">Clear</button>
+      <button mat-button color="warn" *ngIf="bShowPaymentForm" (click)="hide_payment_form()">Close</button>
+    </mat-card-actions>
+
+  </mat-card>
+  <br>
+</div>

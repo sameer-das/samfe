@@ -1,0 +1,54 @@
+<div class="container">
+    <br>
+    <mat-card>
+        <mat-card-content>
+            <div class="row">
+                <mat-form-field class="offset-lg-3 offset-md-3 col-lg-6 col-md-6 col-sm-12 col-xs-12 text-center">
+                    <mat-label>Staff/Student Id</mat-label>
+                    <input matInput type="text" name="searchValue" [(ngModel)]="searchValue">
+                </mat-form-field>
+            </div>
+            <div class="row">
+                <div class="offset-lg-3 offset-md-3 col-lg-6 col-md-6 col-sm-12 col-xs-12 text-center">
+                    <mat-radio-group [(ngModel)]="searchType" aria-label="Select an option">
+                        <mat-radio-button class="radio-button" value="staff">Staff</mat-radio-button>
+                        <mat-radio-button class="radio-button" value="student">Student</mat-radio-button>
+                    </mat-radio-group>
+                </div>
+            </div>
+            <div class="row">
+                <div class="offset-lg-3 offset-md-3 col-lg-6 col-md-6 col-sm-12 col-xs-12 text-center">
+                    <button class="m08" mat-flat-button color="primary" (click)="onSearch()">Search</button>
+                    <button class="m08" mat-flat-button color="accent" (click)="clearSearch()">Clear</button>
+                </div>
+            </div>
+        </mat-card-content>
+
+        <div *ngIf="bShowUserDetails" >
+            <div class="row">
+                <div class="offset-lg-3 offset-md-3 col-lg-6 col-md-6 col-sm-12 col-xs-12 text-center">
+                    <strong>ID:</strong> {{showingDetails.person_id | uppercase}}
+                    <br>
+                    <strong>Name:</strong> {{showingDetails.person_name}}
+                </div>
+            </div>
+            <br>
+            <div class="row">
+                <mat-form-field class="offset-lg-2 offset-md-2 col-lg-4 col-md-4 col-sm-12 col-xs-12">
+                    <mat-label>Assign Role</mat-label>
+                  <mat-select [(ngModel)]="assignedRole" >
+                    <mat-option *ngFor="let role of roles" [value]="role.id_role"> {{role.role_name | uppercase}} </mat-option>
+                  </mat-select>
+                </mat-form-field>
+
+                <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12 text-center">
+                    <button mat-stroked-button color="primary" [disabled]="!assignedRole" (click)="assignRole()" > Assign </button>
+                    <button style="margin: 0 8px" mat-stroked-button color="accent" [disabled]="!assignedRole" (click)="reset_psw()" > Reset Password </button>
+                </div>
+            </div>
+
+        </div>
+
+    </mat-card>
+    <br>
+</div>

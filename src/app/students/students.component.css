@@ -1,0 +1,49 @@
+mat-grid-tile {
+    background-color: #ffd740;
+}
+
+mat-grid-tile:hover {
+    cursor: pointer;
+    background-color: #d4a90e;
+}
+
+/* SEarch Box */
+
+.search-box{
+    position: absolute;
+    top: 20%;
+    left: 50%;transform: translate(-50%,-50%);
+}
+
+.search-box input,button {
+    border: none;
+    background: none;
+    outline: none;    
+}
+
+.search-box button {
+    cursor: pointer;
+}
+
+.search-box {
+    display: flex;
+    background: #fff;
+    border-radius: 4em;
+}
+.search-box-input {
+    font-size: 1.2em;
+    color: #673ab7;    
+    margin: 10px
+}
+.search-box-btn {
+    color: #673ab7;
+    display: flex;
+    margin: 10px;
+}
+
+
+
+.clear{
+    position: relative;
+    margin: 0;
+}

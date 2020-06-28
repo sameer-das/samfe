@@ -1,0 +1,79 @@
+#staff_id {
+    color: #673ab7;
+    transition: 0.3s;
+}
+
+#staff_id:hover {
+    cursor: pointer;
+    color: #ffd740;
+}
+
+.table-icon{
+    transition: 0.3s;
+}
+
+.table-icon:hover{
+    transform: scale(1.4);
+    cursor: pointer;
+}
+
+.download_icon {
+    color: #6a3ab7;
+    transition: 0.3s;
+}
+
+.download_icon:hover {
+    transform: scale(1.5);
+    cursor: pointer;
+}
+
+.remove_icon {
+    color: #ffd740;
+    transition: 0.3s;
+    margin-left: 10px;
+}
+
+.remove_icon:hover {
+    transform: scale(1.5);
+    cursor: pointer;
+}
+
+
+
+.box1 img {
+    height: 200px;
+    width: 200px;
+}
+
+.box2 ul {
+    list-style: none;
+}
+
+
+
+.button-div button{
+    margin: 12px;
+    transition: 0.5s;
+}
+
+.button-div button:hover{
+    transform: scale(1.2);
+}
+
+
+.button-div {
+    text-align: center;
+}
+
+#close-button {
+    position: absolute;
+    right: 0px;
+    margin: 0 12px;
+    transition: 0.5s;
+    
+}
+
+#close-button:hover {
+    color: orangered;
+    transform: rotateZ(90deg);
+}

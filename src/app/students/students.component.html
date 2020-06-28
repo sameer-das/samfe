@@ -1,0 +1,13 @@
+<mat-tab-group (selectedTabChange)="tabChanged($event)">
+  <mat-tab *ngIf="perm.permission_student > 0" label="Student Details">
+    <app-student-detail [indexOfTab]="selectedTab"></app-student-detail>
+  </mat-tab>
+  <mat-tab *ngIf="perm.permission_studentenquiry >= 2" label="New Enquiry">
+    <app-new-enquiry></app-new-enquiry>
+  </mat-tab>
+  <mat-tab *ngIf="perm.permission_studentenquiry >= 1"  label="Enquiry History" >
+    <app-enquiry-history [indexOfTab]="selectedTab"></app-enquiry-history>
+  </mat-tab>
+</mat-tab-group>
+
+

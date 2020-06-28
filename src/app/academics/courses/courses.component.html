@@ -1,0 +1,29 @@
+<button mat-button *ngIf="perm.permission_academics >= 2" (click)="showNewCourseForm()">New Course <mat-icon>add</mat-icon></button>
+<div class="container">
+  <app-new-course-form *ngIf="bShowNewCourseForm" (hideNewCourseForm)="hideNewCourseForm($event)"></app-new-course-form>
+  <app-course-details *ngIf="bShowCourseDetails" (hideCourseDetails)="hideCourseDetails($event)" [course]="showingCourse">
+  </app-course-details>
+  <div *ngIf="!bShowNewCourseForm && !bShowCourseDetails">
+    <!-- <h3>Academic Courses</h3> -->
+    <table class="table" *ngIf="courses.length > 0">
+      <thead>
+        <tr>
+          <th scope="col">#</th>
+          <th scope="col">Course Name</th>
+          <th scope="col">Department</th>
+          <th scope="col">Awarding Body</th>
+          <th scope="col">Course In Charge</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let course of courses; let i = index">
+          <td> {{i+1}} </td>
+          <td> <span id="course-detail" (click)=onCourseDetail(course)> {{course.name}} </span></td>
+          <td> {{course.department_name}} </td>
+          <td> {{course.awarding_body_name}} </td>
+          <td> {{course.course_incharge_name}} </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

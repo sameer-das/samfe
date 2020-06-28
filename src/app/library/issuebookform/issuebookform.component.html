@@ -1,0 +1,53 @@
+<h3 mat-dialog-title> Search Book</h3>
+
+<mat-dialog-content>
+  <form>
+    <div class="row">
+      <mat-form-field class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+        <mat-label>Book ID</mat-label>
+        <input matInput type="text" required name="searchBookId" [(ngModel)]="searchBookId"/>
+      </mat-form-field>
+    </div>
+  
+    <div class="row">
+      <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 text-center">
+        <button mat-button type="submit" color="primary" [disabled]="!searchBookId" (click)="onSearchBook()">Search</button>
+        <button mat-button type="button" color="accent" (click)="onClearBookSearch()">Clear</button>
+      </div>
+    </div>
+  </form>
+
+  <div *ngIf="bShowMessage && display_message" class="row text-center">
+    <p>{{display_message}}</p>
+  </div>
+
+  <div *ngIf="showBookDetail && bookDetail" class="row">
+    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 text-center book-details">
+      <p><strong>Title: </strong>{{bookDetail.name}}</p>
+      <p><strong>Publisher: </strong>{{bookDetail.publisher}}</p>
+      <p><strong>Author: </strong> {{bookDetail.author}} </p>
+      <p><strong>Edition: </strong> {{bookDetail.edition}} </p>
+    </div>
+  </div>
+  <br>
+  <div *ngIf="showBookDetail" class="row">
+    <mat-form-field class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+      <mat-label>Start Date</mat-label>
+      <input matInput [matDatepicker]="picker" readonly [(ngModel)]="startDate" name="statDate">
+      <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+      <mat-datepicker #picker></mat-datepicker>
+    </mat-form-field>
+    <mat-form-field class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+      <mat-label>End Date</mat-label>
+      <input matInput [matDatepicker]="picker1" readonly [(ngModel)]="endDate" name="endDate">
+      <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+      <mat-datepicker #picker1></mat-datepicker>
+    </mat-form-field>
+  </div>
+
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <button *ngIf="showBookDetail" color="primary" mat-stroked-button (click)="AddBook()">Add</button>
+  <button color="accent" mat-stroked-button (click)="closeModal()">Cancel</button>
+</mat-dialog-actions>

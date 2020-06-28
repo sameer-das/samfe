@@ -1,0 +1,138 @@
+<h3 mat-dialog-title> Edit Staff Details</h3>
+<mat-dialog-content>
+  <strong>Personal Details</strong>
+  <form [formGroup]='edit_staff'>
+    <div class="row">
+      <mat-form-field class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
+        <mat-label>Staff Id</mat-label>
+        <input matInput type="text" formControlName="staff_id" required />
+      </mat-form-field>
+      <mat-form-field class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
+        <mat-label>Name</mat-label>
+        <input matInput type="text" formControlName="name" required />
+      </mat-form-field>
+      <mat-form-field class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
+        <mat-label>Mobile No</mat-label>
+        <input matInput type="text" maxlength="10" formControlName="mobile" required />
+      </mat-form-field>
+      <mat-form-field class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
+        <mat-label>Emergency Contact</mat-label>
+        <input matInput type="text" maxlength="10" formControlName="emergency_contact" />
+      </mat-form-field>
+    </div>
+
+    <div class="row">
+      <mat-form-field class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
+        <mat-label>Email</mat-label>
+        <input matInput type="email" formControlName="email">
+      </mat-form-field>
+
+      <mat-form-field class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
+        <mat-label>Gender</mat-label>
+        <mat-select formControlName="gender" required>
+          <mat-option value="m">Male</mat-option>
+          <mat-option value="f">Female</mat-option>
+          <mat-option value="o">Other</mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <mat-form-field class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
+        <mat-label>Blood Group</mat-label>
+        <mat-select formControlName="bloodgroup" required>
+          <mat-option value="A+">A+</mat-option>
+          <mat-option value="A-">A-</mat-option>
+          <mat-option value="B+">B+</mat-option>
+          <mat-option value="B-">B-</mat-option>
+          <mat-option value="O+">O+</mat-option>
+          <mat-option value="O-">O-</mat-option>
+          <mat-option value="AB+">AB+</mat-option>
+          <mat-option value="AB-">AB-</mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <mat-form-field class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
+        <mat-label>Date of Birth</mat-label>
+        <input matInput [matDatepicker]="picker" formControlName="dob" required>
+        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+        <mat-datepicker #picker></mat-datepicker>
+      </mat-form-field>
+    </div>
+
+
+    <div class="row">
+      <mat-form-field class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+        <mat-label>Permanet Address</mat-label>
+        <textarea matInput formControlName="permanent_address" required></textarea>
+      </mat-form-field>
+      <mat-form-field class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+        <mat-label>Current Address</mat-label>
+        <textarea matInput formControlName="current_address" required></textarea>
+      </mat-form-field>
+      <mat-checkbox #ref (change)="samePermanentCurrentAddress(ref.checked)">Permanet and current address are same
+      </mat-checkbox>
+    </div>
+
+    <div class="row">
+      <mat-form-field class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
+        <mat-label>Date of Joining</mat-label>
+        <input matInput [matDatepicker]="picker1" formControlName="doj" required>
+        <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+        <mat-datepicker #picker1></mat-datepicker>
+      </mat-form-field>
+
+      <mat-form-field class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
+        <mat-label>Medical History</mat-label>
+        <input matInput type="text" formControlName="past_med_history">
+      </mat-form-field>
+
+      <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
+        <mat-checkbox #married formControlName="married">Married</mat-checkbox>
+      </div>
+
+      <mat-form-field class="col-lg-3 col-md-3 col-sm-12 col-xs-12" *ngIf="married.checked">
+        <mat-label>Spouse Name</mat-label>
+        <input type="text" matInput formControlName="spouse_detail">
+      </mat-form-field>
+    </div>
+  </form>
+
+  <div class="row">
+    <div class="offset-sm-4 col-sm-4 offset-md-4 col-md-4">
+      <button color="primary" class="btn-block" mat-raised-button (click)="updatePersonalDetails()">Update Personal Details</button>
+    </div>
+  </div>
+
+<br>
+  <mat-divider></mat-divider>
+  <br>
+  <strong>Department Details</strong>
+
+  <form [formGroup]="department_form">
+    <div class="row">
+      <mat-form-field class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+        <mat-label>Department</mat-label>
+        <mat-select formControlName="department" (selectionChange)="onDepartmentChange()">
+          <mat-option [value]="department.id_department" *ngFor="let department of form_bound_departments"> {{department.name}} </mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <mat-form-field class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+        <mat-label>Designation</mat-label>
+        <mat-select formControlName="designation">
+          <mat-option [value]="designation.id_designation" *ngFor="let designation of form_bound_designations" > {{designation.designation_name}} </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+  </form>
+
+  <div class="row">
+    <div class="offset-sm-4 col-sm-4 offset-md-4 col-md-4">
+      <button color="primary" class="btn-block" mat-raised-button (click)="updateDepartmentDetails()">Update Department Details</button>
+    </div>
+  </div>
+
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <button color="accent"  mat-raised-button (click)="close()">Close</button>
+</mat-dialog-actions>

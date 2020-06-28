@@ -1,0 +1,535 @@
+<div class="container">
+  <div class="text-center menu-btn-group">
+    <button mat-button color="primary" (click)="showIssueForm()">Issue Book</button>
+    <button mat-button color="primary" (click)="showReturnForm()">Return Book</button>
+    <button mat-button color="primary" (click)="showAddNewBookForm()">Add Book</button>
+    <button mat-button color="primary" (click)="showReport()">Reports</button>
+  </div>
+</div>
+<br>
+<!-- Add Book Form -->
+
+<div *ngIf="bShowAddNewBookForm" class="container">
+  <mat-card>
+    <mat-card-header>
+      <mat-card-title>
+        Add New Book
+        <button type="button" id="close-button" aria-label="Close" color="accent" title="Close" mat-icon-button
+          (click)="hideAddNewBookForm()">
+          <mat-icon>close</mat-icon>
+        </button>
+      </mat-card-title>
+    </mat-card-header>
+
+    <mat-card-content>
+      <form [formGroup]="add_book_form">
+
+
+        <div class="row">
+          <mat-form-field class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
+            <mat-label>Book Id</mat-label>
+            <input matInput type="text" required formControlName="book_id" />
+          </mat-form-field>
+          <mat-form-field class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
+            <mat-label>Book Name</mat-label>
+            <input matInput type="text" required formControlName="name" />
+          </mat-form-field>
+          <mat-form-field class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
+            <mat-label>Subject Matter</mat-label>
+            <input matInput type="text" formControlName="subject" />
+          </mat-form-field>
+        </div>
+        <div class="row">
+          <mat-form-field class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
+            <mat-label>ISBN</mat-label>
+            <input matInput type="text" required formControlName="isbn" />
+          </mat-form-field>
+          <mat-form-field class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
+            <mat-label>Edition</mat-label>
+            <input matInput type="number" formControlName="edition" />
+          </mat-form-field>
+          <mat-form-field class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
+            <mat-label>Author</mat-label>
+            <input matInput type="text" required formControlName="author" />
+          </mat-form-field>
+        </div>
+        <div class="row">
+          <mat-form-field class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
+            <mat-label>Publisher</mat-label>
+            <input matInput type="text" required formControlName="publisher" />
+          </mat-form-field>
+          <mat-form-field class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
+            <mat-label>Price</mat-label>
+            <input matInput type="text" formControlName="price" />
+          </mat-form-field>
+          <mat-form-field class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
+            <mat-label>No. of Pages</mat-label>
+            <input matInput type="text" formControlName="pages" />
+          </mat-form-field>
+        </div>
+      </form>
+    </mat-card-content>
+    <mat-card-actions class="text-center">
+      <button mat-stroked-button color="primary" [disabled]="add_book_form.invalid" (click)="onAddBook()">Save</button>
+      <button mat-stroked-button color="accent" (click)="clear_add_book_form()">Clear</button>
+    </mat-card-actions>
+  </mat-card>
+</div>
+
+
+
+<!-- Issue Book Form -->
+<div *ngIf="bShowIssueForm" class="container">
+  <mat-card>
+    <mat-card-header>
+      <mat-card-title>
+        Issuing
+        <button type="button" id="close-button" aria-label="Close" color="accent" title="Close" mat-icon-button
+          (click)="hideIssueForm()">
+          <mat-icon>close</mat-icon>
+        </button>
+      </mat-card-title>
+    </mat-card-header>
+
+    <mat-card-content>
+      <div class="row">
+
+        <form class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+          <div class="row">
+            <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12 search-box">
+              <mat-form-field>
+                <mat-label>Staff/Student Id</mat-label>
+                <input matInput type="text" required name="userSearchValue" [(ngModel)]="userSearchValue" />
+              </mat-form-field>
+              <mat-radio-group class="radio-button-group" name="searchUserBy" [(ngModel)]="searchUserBy">
+                <mat-radio-button class="radio-button" value="student">Student</mat-radio-button>
+                <mat-radio-button class="radio-button" value="staff">Staff</mat-radio-button>
+              </mat-radio-group>
+            </div>
+
+
+            <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12 search-button-group">
+              <button mat-button type="submit" color="primary" [disabled]="!userSearchValue"
+                (click)="searchUserForIssue()">Search</button>
+              <button mat-button type="button" color="accent" (click)="clearUserSearch()">Clear</button>
+            </div>
+          </div>
+        </form>
+
+
+
+        <div *ngIf="bShowUserForIssue && userSearchResult"
+          class="col-lg-2 col-md-2 col-sm-12 col-xs-12 box1 text-center">
+          <img class="img-thumbnail" alt="avatar" [src]="avatarLink">
+        </div>
+        <div *ngIf="bShowUserForIssue && userSearchResult"
+          class="text-center col-lg-4 col-md-4 col-sm-12 col-xs-12 details">
+          <p>{{userSearchResult.person_name}} ({{userSearchResult.person_id}})</p>
+          <p>{{userSearchResult.person_email}}</p>
+          <p>{{userSearchResult.person_phone}}</p>
+
+          <div class="user-action-buttons">
+            <button mat-stroked-button color="primary" title="Add Book" (click)="openAddBookDialog()">Add Book</button>
+            <!-- <button mat-stroked-button color="primary" title="Transaction History">History</button> -->
+          </div>
+
+        </div>
+      </div>
+      <br>
+
+      <div *ngIf="bShowUserForIssue">
+        <div *ngFor="let book of issuing_book_array; let i = index" class="issue-book-details">
+          <div class="row">
+            <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
+              <p><strong>Book ID : </strong> {{book.book_id}} </p>
+              <p><strong>Title : </strong>{{book.name}}</p>
+            </div>
+            <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
+              <p><strong>ISBN: </strong>{{book.isbn}}</p>
+              <p><strong>Edition : </strong>{{book.edition}} </p>
+            </div>
+            <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
+              <p><strong>Author : </strong>{{book.author}}</p>
+              <p><strong>Publisher : </strong>{{book.publisher}}</p>
+            </div>
+            <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
+              <p><strong>Issued From : </strong>{{book.issued_on | date:'dd-MMM-yyyy' }}</p>
+              <p><strong>Issued Till : </strong>{{book.issued_till | date:'dd-MMM-yyyy'}}</p>
+            </div>
+          </div>
+          <div *ngIf="book.isNewlyAdded" class="row">
+            <div class="offset-lg-9 offset-md-9 col-lg-3 col-md-3 col-sm-3 col-xs-3 text-center">
+              <button mat-button title="Remove" color="warn" (click)="removeBook(i)">Remove</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+    </mat-card-content>
+    <mat-card-actions *ngIf="bShowUserForIssue" align="end">
+      <button mat-stroked-button color="primary" (click)="saveTransaction()">Save</button>
+    </mat-card-actions>
+  </mat-card>
+</div>
+
+
+
+<!-- Return Book -->
+
+<!-- Issue Book Form -->
+<div *ngIf="bShowReturnForm" class="container">
+  <mat-card>
+    <mat-card-header>
+      <mat-card-title>
+        Returning
+        <button type="button" id="close-button" aria-label="Close" color="accent" title="Close" mat-icon-button
+          (click)="hideReturnForm()">
+          <mat-icon>close</mat-icon>
+        </button>
+      </mat-card-title>
+    </mat-card-header>
+
+    <mat-card-content>
+      <div class="row">
+        <form class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+          <div class="row">
+            <mat-form-field class="col-lg-6 col-md-6 col-sm-12 col-xs-12 search-box">
+              <mat-label>Bool Id</mat-label>
+              <input matInput type="text" required name="searchBookIdReturn" [(ngModel)]="searchBookIdReturn" />
+            </mat-form-field>
+            <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12 search-button-group">
+              <button mat-button color="primary" type="submit" [disabled]="!searchBookIdReturn"
+                (click)="searchBookForReturn()">Search</button>
+              <button mat-button color="accent" type="button" (click)="clearReturnForm()">Clear</button>
+            </div>
+          </div>
+        </form>
+
+        <div *ngIf="bShowBookDetailForReturn" class="col-lg-2 col-md-2 col-sm-12 col-xs-12 box1 text-center">
+          <img class="img-thumbnail" alt="avatar" [src]="avatarLink">
+        </div>
+        <div *ngIf="bShowBookDetailForReturn" class="text-center col-lg-4 col-md-4 col-sm-12 col-xs-12 details">
+          <p>{{searchBookIdReturnResult.person_name}} ({{searchBookIdReturnResult.person_id | uppercase}})</p>
+          <p>{{searchBookIdReturnResult.person_email}}</p>
+          <p>{{searchBookIdReturnResult.person_phone}}</p>
+        </div>
+      </div>
+      <br><br>
+      <div *ngIf="bShowBookDetailForReturn" class="row return-book-details">
+        <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
+          <p><strong>Title : </strong>{{searchBookIdReturnResult.title}} </p>
+          <p><strong>Author : </strong>{{searchBookIdReturnResult.author}}</p>
+        </div>
+        <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
+          <p><strong>Publisher : </strong>{{searchBookIdReturnResult.publisher}}</p>
+          <p><strong>Edition : </strong>{{searchBookIdReturnResult.edition}} </p>
+          <p><strong>ISBN: </strong>{{searchBookIdReturnResult.isbn}}</p>
+        </div>
+        <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
+          <p><strong>Issued On : </strong>{{searchBookIdReturnResult.issued_on | date:'dd-MMM-yyyy'}}</p>
+          <p><strong>Issued Till : </strong>{{searchBookIdReturnResult.issued_till | date:'dd-MMM-yyyy'}}</p>
+        </div>
+        <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12" id="return-button">
+          <mat-form-field>
+            <mat-label>Remarks</mat-label>
+            <input matInput name="return_remark" [(ngModel)]="return_remark">
+          </mat-form-field>
+          <button mat-button color="accent" [disabled]="!return_remark" (click)="onBookReturn()">Return</button>
+        </div>
+      </div>
+    </mat-card-content>
+  </mat-card>
+</div>
+
+
+<!-- Book Search -->
+<div *ngIf="bShowSearchBook" class="container">
+  <mat-card>
+    <mat-card-header>
+      <mat-card-title>
+        Search Book
+      </mat-card-title>
+    </mat-card-header>
+
+    <mat-card-content>
+      <form>
+        <div class="row">
+          <mat-form-field class="offset-lg-3 offset-md-3 col-lg-6 col-md-6 col-sm-12 col-xs-12">
+            <mat-label>Bool Id/Book Title</mat-label>
+            <input matInput type="text" [(ngModel)]="bookSearchValue" name="booksearch" />
+          </mat-form-field>
+        </div>
+        <div class="row">
+          <div class="text-center offset-lg-3 offset-md-3 col-lg-6 col-md-6 col-sm-12 col-xs-12">
+            <button mat-button type="submit" color="primary" [disabled]="!bookSearchValue"
+              (click)="search_book()">Search</button>
+            <button mat-button type="button" color="accent" (click)="onClearBookSearch()">Clear</button>
+          </div>
+        </div>
+      </form>
+
+      <br>
+      <div *ngIf="bookSearchResult.length">
+        <div *ngFor="let book of bookSearchResult; let i = index" class="search-book-details">
+          <div class="row">
+            <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
+              <p><strong>Book ID : </strong> {{book.book_id}} </p>
+              <p><strong>Title : </strong> {{book.name}} </p>
+              <p><strong>Subject : </strong> {{book.subject}} </p>
+            </div>
+            <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
+              <p><strong>Author : </strong> {{book.author}} </p>
+              <p><strong>Publisher : </strong>{{book.publisher}}</p>
+              <p><strong>Edition : </strong>{{book.edition}}</p>
+            </div>
+            <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
+              <p><strong>ISBN: </strong> {{book.isbn}}</p>
+              <p><strong>Price: </strong> {{book.price}}</p>
+              <p><strong>Pages : </strong>{{book.pages}}</p>
+            </div>
+            <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
+              <p><strong>Status: </strong> <span [ngStyle]="{'color': book.issued ? 'tomato' : 'green'}">
+                  {{book.issued ? 'Not Available' : 'Available' }} </span> </p>
+              <!-- <p *ngIf="book.last_issued_to"><strong>Last Issued To: </strong> {{book.last_issued_to}}</p> -->
+              <p><strong>Last Issued On: </strong> {{book.last_issued_on | date:'dd-MMM-yyyy'}}</p>
+              <p><strong>Last Issued Till: </strong> {{book.last_issued_till | date:'dd-MMM-yyyy'}}</p>
+            </div>
+          </div>
+          <div class="row">
+            <div class="offset-lg-6 offset-md-6 col-lg-6 col-md-6 col-sm-12 col-xs-12 edit-button">
+              <button mat-button title="Edit Book Details" color="primary" type="button" [disabled]="book.issued"
+                (click)="showEditBookForm(book)"> Edit </button>
+              <!-- <button mat-button color="primary" type="button"> History </button> -->
+              <button mat-button title="Delete Book From Library" color="warn" type="button" [disabled]="book.issued"
+                (click)="onDeleteBook(book.id_book, book.book_id, i)"> Delete </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </mat-card-content>
+  </mat-card>
+</div>
+
+
+
+
+
+
+<!-- Edit Book Form  -->
+<div class="container" *ngIf="bShowBookEditForm">
+  <mat-card>
+    <mat-card-header>
+      <mat-card-title>
+        Edit Book
+        <button type="button" id="close-button" aria-label="Close" color="accent" title="Close" mat-icon-button
+          (click)="hideEditBookForm()">
+          <mat-icon>close</mat-icon>
+        </button>
+      </mat-card-title>
+    </mat-card-header>
+
+    <mat-card-content>
+      <form [formGroup]="edit_book_form">
+        <div class="row">
+          <mat-form-field class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
+            <mat-label>Book Id</mat-label>
+            <input matInput type="text" required formControlName="book_id" />
+          </mat-form-field>
+          <mat-form-field class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
+            <mat-label>Book Name</mat-label>
+            <input matInput type="text" required formControlName="name" />
+          </mat-form-field>
+          <mat-form-field class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
+            <mat-label>Subject Matter</mat-label>
+            <input matInput type="text" formControlName="subject" />
+          </mat-form-field>
+        </div>
+        <div class="row">
+          <mat-form-field class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
+            <mat-label>ISBN</mat-label>
+            <input matInput type="text" required formControlName="isbn" />
+          </mat-form-field>
+          <mat-form-field class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
+            <mat-label>Edition</mat-label>
+            <input matInput type="number" formControlName="edition" />
+          </mat-form-field>
+          <mat-form-field class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
+            <mat-label>Author</mat-label>
+            <input matInput type="text" required formControlName="author" />
+          </mat-form-field>
+        </div>
+        <div class="row">
+          <mat-form-field class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
+            <mat-label>Publisher</mat-label>
+            <input matInput type="text" required formControlName="publisher" />
+          </mat-form-field>
+          <mat-form-field class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
+            <mat-label>Price</mat-label>
+            <input matInput type="text" formControlName="price" />
+          </mat-form-field>
+          <mat-form-field class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
+            <mat-label>No. of Pages</mat-label>
+            <input matInput type="text" formControlName="pages" />
+          </mat-form-field>
+        </div>
+      </form>
+    </mat-card-content>
+    <mat-card-actions align="end">
+      <button mat-button color="primary" title="Update Book Details" type="button"
+        (click)="updateBookDetails()">Update</button>
+    </mat-card-actions>
+  </mat-card>
+</div>
+
+<!-- Reports Goes here -->
+
+<div *ngIf="bShowReport" class="container">
+  <div id="close-report">
+    <button type="button" id="close-report-button" aria-label="Close" color="accent" title="Close" mat-icon-button
+      (click)="hideReport()">
+      <mat-icon>close</mat-icon>
+    </button>
+  </div>
+  <mat-tab-group (selectedTabChange)="reportTabChanged($event)">
+    <mat-tab label="Book">
+      <br>
+      <mat-card>
+        <mat-card-content>
+          <form [formGroup]="report_book" class="row">
+
+            <mat-form-field class="col-lg-3 col-md-4 col-sm-12 col-xs-12">
+              <mat-label>Search by Book Id</mat-label>
+              <input matInput formControlName="book_id">
+            </mat-form-field>
+            <mat-form-field class="col-lg-3 col-md-4 col-sm-12 col-xs-12">
+              <mat-label>Start Date</mat-label>
+              <input matInput [matDatepicker]="picker" formControlName="start_date" readonly name="statDate">
+              <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+              <mat-datepicker #picker></mat-datepicker>
+
+            </mat-form-field>
+            <mat-form-field class="col-lg-3 col-md-4 col-sm-12 col-xs-12">
+              <mat-label>End Date</mat-label>
+              <input matInput [matDatepicker]="picker1" formControlName="end_date" readonly name="endDate">
+              <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+              <mat-datepicker #picker1></mat-datepicker>
+            </mat-form-field>
+            <div class="col-lg-3 col-md-4 col-sm-12 col-xs-12 text-center button-center">
+              <button type="button" mat-button color="primary" [disabled]="report_book.invalid"
+                (click)="fetch_report_book()" title="Fetch Report">Search</button>
+              <button type="button" mat-button color="accent" (click)="clear_report_book_form()">Clear</button>
+            </div>
+          </form>
+        </mat-card-content>
+      </mat-card>
+      <br>
+      <div *ngIf="report_book_result.length > 0" class="table-responsive">
+        <table class="table table-sm">
+          <thead>
+            <tr>
+              <th scope="col">#</th>
+              <th scope="col">Book ID</th>
+              <th scope="col">Book Name</th>
+              <th scope="col">ID</th>
+              <th scope="col">Name</th>
+              <th scope="col">Issued On</th>
+              <th scope="col">Issued Till</th>
+              <th scope="col">Returned On</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let result of report_book_result; let i = index">
+              <th scope="row"> {{i+1}}</th>
+              <td> {{result.book_id | uppercase}} </td>
+              <td> {{result.title}} </td>
+              <td> {{result.person_id | uppercase}} </td>
+              <td> {{result.person_name}}</td>
+              <td> {{result.issued_on | date:'dd-MMM-yyyy'}}</td>
+              <td> {{result.issued_till | date:'dd-MMM-yyyy'}}</td>
+              <td> {{result.returned_on | date:'dd-MMM-yyyy'}}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </mat-tab>
+    <mat-tab label="Student/Staff">
+      <br>
+      <mat-card>
+        <mat-card-content>
+          <form [formGroup]="report_user" class="row">
+            <div class="col-lg-3 col-md-4 col-sm-12 col-xs-12">
+              <mat-form-field>
+                <mat-label>Search by Student/Staff</mat-label>
+                <input matInput formControlName="user_id">
+              </mat-form-field>
+              <mat-radio-group id="report-radio-grp" formControlName="user_type" aria-label="Select an user type">
+                <mat-radio-button value="student">Student</mat-radio-button>
+                <mat-radio-button value="staff">Staff</mat-radio-button>
+              </mat-radio-group>
+            </div>
+
+            <mat-form-field class="col-lg-3 col-md-4 col-sm-12 col-xs-12">
+              <mat-label>Start Date</mat-label>
+              <input matInput [matDatepicker]="picker2" formControlName="start_date" readonly name="statDate">
+              <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+              <mat-datepicker #picker2></mat-datepicker>
+            </mat-form-field>
+            <mat-form-field class="col-lg-3 col-md-4 col-sm-12 col-xs-12">
+              <mat-label>End Date</mat-label>
+              <input matInput [matDatepicker]="picker3" formControlName="end_date" readonly name="endDate">
+              <mat-datepicker-toggle matSuffix [for]="picker3"></mat-datepicker-toggle>
+              <mat-datepicker #picker3></mat-datepicker>
+            </mat-form-field>
+            <div class="col-lg-3 col-md-4 col-sm-12 col-xs-12 text-center button-center">
+              <button type="button" mat-button color="primary" [disabled]="report_user.invalid"
+                (click)="fetch_report_user()" title="Fetch Report">Search</button>
+              <button type="button" mat-button color="accent" (click)="clear_report_user_form()">Clear</button>
+            </div>
+          </form>
+        </mat-card-content>
+      </mat-card>
+      <br>
+      <div *ngIf="report_user_result.length > 0" class="table-responsive">
+        <table class="table table-sm">
+          <thead>
+            <tr>
+              <th scope="col">#</th>
+              <th scope="col">ID</th>
+              <th scope="col">Name</th>
+              <th scope="col">Book ID</th>
+              <th scope="col">Book Name</th>
+              <th scope="col">Issued On</th>
+              <th scope="col">Issued Till</th>
+              <th scope="col">Returned On</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let result of report_user_result; let i = index">
+              <th scope="row"> {{i+1}}</th>
+              <td> {{result.person_id | uppercase}} </td>
+              <td> {{result.person_name}}</td>
+              <td> {{result.book_id | uppercase}} </td>
+              <td> {{result.title}} </td>
+              <td> {{result.issued_on | date:'dd-MMM-yyyy'}}</td>
+              <td> {{result.issued_till | date:'dd-MMM-yyyy'}}</td>
+              <td> {{result.returned_on | date:'dd-MMM-yyyy'}}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </mat-tab>
+    <mat-tab label="All Books">
+      <div class="text-center">
+        <br>
+        <mat-card>
+          <mat-card-content>
+            <button mat-flat-button color="primary" title="Download">Download Complete Book Database</button>
+          </mat-card-content>
+        </mat-card>
+        <br>
+      </div>
+    </mat-tab>
+  </mat-tab-group>
+</div>

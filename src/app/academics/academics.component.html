@@ -1,0 +1,77 @@
+<mat-tab-group (selectedTabChange)="onTabChange($event)">
+  <mat-tab label="Courses">
+    <app-courses [indexOfTab]="selectedTab"></app-courses>
+  </mat-tab>
+  
+  <mat-tab label="Academic Departments">
+    <button mat-button *ngIf="perm.permission_academics >= 2" (click)="openCreateNewAcademicDepartment()">New Academic Department <mat-icon>add</mat-icon></button>
+    <button mat-button *ngIf="perm.permission_academics >= 2" (click)="openCreateNewAwardingbody()">New Awarding Body <mat-icon>add</mat-icon></button>
+    
+    <br>
+    
+    <div *ngIf="showNewAwardingbodyForm" class="container">
+      <form #awardingbodyForm="ngForm">
+        <mat-form-field class="offset-md-4 col-md-4 col-sm-12 col-xs-12">
+          <mat-label>Awarding Body Name</mat-label>
+          <input type="text" name="name" matInput required ngModel>
+        </mat-form-field>
+
+        <div class="offset-md-4 col-md-4 col-sm-12 col-xs-12">
+          <button color="primary" *ngIf="perm.permission_academics >= 2" mat-raised-button [disabled]="awardingbodyForm.invalid" (click)="saveNewAwardingbody(awardingbodyForm)">Save</button>
+          <button color="accent" mat-raised-button (click)="closeForms()">Cancel</button>
+        </div>
+      </form>
+    </div>
+
+    <div *ngIf="showNewAcademicDepartmentForm">
+      <form #academicDepartmentForm="ngForm">
+        <mat-form-field class="offset-md-4 col-md-4 col-sm-12 col-xs-12">
+          <mat-label>Department Name</mat-label>
+          <input type="text" matInput required name="name" ngModel>
+        </mat-form-field>
+        <mat-form-field class="offset-md-4 col-md-4 col-sm-12 col-xs-12">
+          <mat-label>Awarding Body</mat-label>
+          <mat-select required name="id_awarding_body" ngModel>
+            <mat-option [value]="ab.id_awarding_body" *ngFor="let ab of awardingbodies">{{ab.name}}</mat-option>
+          </mat-select>
+        </mat-form-field>
+        <div class="offset-md-4 col-md-4 col-sm-12 col-xs-12">
+          <button color="primary" *ngIf="perm.permission_academics >= 2" mat-raised-button [disabled]="academicDepartmentForm.invalid" (click)="saveNewAcademicDepartment(academicDepartmentForm)" >Save</button>
+          <button color="accent" mat-raised-button (click)="closeForms()">Cancel</button>
+        </div>
+      </form>
+    </div>
+
+    <div *ngIf="!showNewAwardingbodyForm && !showNewAcademicDepartmentForm" class="container" >
+      <!-- <h3>Academic Departments</h3> -->
+      <table class="table" *ngIf="academicDepartments.length > 0">
+        <thead>
+          <tr>
+            <th scope="col">#</th>
+            <th scope="col">Name</th>
+            <th scope="col">Awarding Body</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let dept of academicDepartments; let i = index">            
+            <td> {{i+1}} </td>
+            <td> {{dept.department_name}} </td>
+            <td> {{dept.awarding_body_name}} </td>
+          </tr>
+          </tbody>
+      </table>
+    </div>
+
+    <div>
+
+    </div>
+  </mat-tab>
+
+  <mat-tab label="Academic Batches">
+    <app-batches [indexOfTab]="selectedTab"></app-batches>
+  </mat-tab>
+
+  <mat-tab label="Room">
+    <app-rooms [indexOfTab]="selectedTab"></app-rooms>
+  </mat-tab>
+</mat-tab-group>
