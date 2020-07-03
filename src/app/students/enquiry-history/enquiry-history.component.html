@@ -103,8 +103,8 @@
             </div>
 
             <div class="text-center">
-                <button *ngIf="perm.permission_studentenquiry >= 2" mat-button color="primary" title="Edit Enquiry" (click)="onEdit()">Edit</button>
-                <button *ngIf="perm.permission_studentenquiry >= 2" mat-button color="warn" title="Delete Enquiry" (click)="onDelete()">Delete</button>
+                <button *ngIf="perm.permission_studentenquiry >= 2" mat-raised-button color="primary" title="Edit Enquiry" (click)="onEdit()">Edit</button>
+                <button *ngIf="perm.permission_studentenquiry >= 2" mat-raised-button color="warn" title="Delete Enquiry" (click)="onDelete()">Delete</button>
             </div>
             <div *ngIf="showingEnquiry.communications.length > 0">
                 <h6 class="text-center"> Communication Details</h6>
@@ -218,7 +218,7 @@
             
               <div *ngIf="perm.permission_studentenquiry >= 2" class="fourthline">
                 <button mat-button color="primary" title="Add Rows" type="button" (click)="add_communications_row()">Add Communication</button>
-                <button mat-button color="primary" title="Save Details" type="button" (click)="update()">Update</button>
+                <button mat-raised-button color="primary" title="Save Details" type="button" (click)="update()">Update</button>
               </div>
             </form>
         </mat-card-content>

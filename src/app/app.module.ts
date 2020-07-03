@@ -29,7 +29,6 @@ import { EditStaffDetailsDialogComponent } from './staffs/staff-details/edit-sta
 import { CourseDetailsComponent } from './academics/courses/course-details/course-details.component';
 import { BatchesComponent } from './academics/batches/batches.component';
 import { RoomsComponent } from './academics/rooms/rooms.component';
-import { RoomDetailComponent } from './academics/rooms/room-detail/room-detail.component';
 import { PolicyComponent } from './policy/policy.component';
 import { NoticeComponent } from './notice/notice.component';
 import { LibraryComponent } from './library/library.component';
@@ -40,6 +39,7 @@ import { JwtModule, JwtHelperService, JWT_OPTIONS  } from '@auth0/angular-jwt';
 import { UserComponent } from './user/user/user.component';
 import { UserManagementComponent } from './user/user-management/user-management.component';
 import { RolesComponent } from './user/roles/roles.component';
+import { TimetableComponent } from './timetable/timetable.component';
 
 @NgModule({
   declarations: [
@@ -63,10 +63,11 @@ import { RolesComponent } from './user/roles/roles.component';
     DetailDepartmentDialogComponent,
     EditStaffDetailsDialogComponent, 
     CourseDetailsComponent, BatchesComponent, 
-    RoomsComponent, RoomDetailComponent, PolicyComponent, 
+    RoomsComponent, PolicyComponent, 
     NoticeComponent, LibraryComponent, IssuebookformComponent, 
     HierarchyComponent, ForgotPasswordComponent, UserComponent, UserManagementComponent,
-    RolesComponent
+    RolesComponent,
+    TimetableComponent
 
   ],
   entryComponents: [

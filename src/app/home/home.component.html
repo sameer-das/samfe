@@ -13,6 +13,7 @@
       <a *ngIf="+perm.permission_student > 0 || +perm.permission_studentenquiry >= 1" routerLink="/home/students" mat-list-item> Students </a>
       <a *ngIf="+perm.permission_academics > 0" routerLink="/home/academics" mat-list-item> Academics </a> 
       <a *ngIf="+perm.permission_staff > 0" routerLink="/home/staffs" mat-list-item> Staffing </a>
+      <!-- <a routerLink="/home/timetable" mat-list-item> Time Table </a> -->
       <!-- <a routerLink="/home/attendance" mat-list-item> Attendance </a>      -->
       <a *ngIf="+perm.permission_policy > 0" routerLink="/home/policy" mat-list-item> Policies </a>
       <a *ngIf="+perm.permission_notice > 0" routerLink="/home/notice" mat-list-item> Notice </a>

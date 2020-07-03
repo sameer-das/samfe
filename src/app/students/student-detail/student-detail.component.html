@@ -1,16 +1,6 @@
-<!-- <div>
-  <div style="text-align: center;" class="mat-title">
-    Student Details
-    <div>
-        <input type="text">
-    </div>
-  </div>
-</div> -->
 
-<button mat-button type="button" *ngIf="bShowStudentList && perm.permission_student == 2 " (click)="showCreateStudentForm()">New Student</button>
-
-<br>
 <div *ngIf="bShowStudentList && perm.permission_student >= 1" class="container">
+  <button mat-button color="primary" type="button" *ngIf="bShowStudentList && perm.permission_student == 2 " (click)="showCreateStudentForm()">New Student</button>
   <p class="text-center" *ngIf="!students.length">No Students found, Please create new!</p>
   <table *ngIf="students.length" class="table">
     <thead>

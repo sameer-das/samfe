@@ -1,4 +1,4 @@
-<mat-tab-group (selectedTabChange)="tabChanged($event)">
+<mat-tab-group (selectedTabChange)="tabChanged($event)" [dynamicHeight]="true">
   <mat-tab *ngIf="perm.permission_staff > 0" label="Staff Details">
     <app-staff-details [indexOfTab]="selectedTab"></app-staff-details>
   </mat-tab> 

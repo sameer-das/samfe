@@ -1,11 +1,14 @@
-<mat-tab-group (selectedTabChange)="onTabChange($event)">
+<mat-tab-group (selectedTabChange)="onTabChange($event)" [dynamicHeight]="true">
   <mat-tab label="Courses">
     <app-courses [indexOfTab]="selectedTab"></app-courses>
   </mat-tab>
   
   <mat-tab label="Academic Departments">
-    <button mat-button *ngIf="perm.permission_academics >= 2" (click)="openCreateNewAcademicDepartment()">New Academic Department <mat-icon>add</mat-icon></button>
-    <button mat-button *ngIf="perm.permission_academics >= 2" (click)="openCreateNewAwardingbody()">New Awarding Body <mat-icon>add</mat-icon></button>
+    <div class="container">
+
+      <button mat-button color="primary" *ngIf="perm.permission_academics >= 2" (click)="openCreateNewAcademicDepartment()">New Academic Department <mat-icon>add</mat-icon></button>
+      <button mat-button color="primary" *ngIf="perm.permission_academics >= 2" (click)="openCreateNewAwardingbody()">New Awarding Body <mat-icon>add</mat-icon></button>
+    </div>
     
     <br>
     

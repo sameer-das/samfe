@@ -1,8 +1,8 @@
-<button *ngIf="perm.permission_academics >= 2" mat-button (click)="showNewBatchForm()">New Batch<mat-icon>add</mat-icon></button>
 
-<br>
 
 <div *ngIf="!bShowNewBatchForm" class="container">
+  <button *ngIf="perm.permission_academics >= 2" color="primary" mat-button (click)="showNewBatchForm()">New Batch<mat-icon>add</mat-icon></button>
+  <br>
   <table class="table" *ngIf="batches.length > 0">
     <thead>
       <tr>

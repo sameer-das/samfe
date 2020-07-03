@@ -50,7 +50,7 @@
               <input type="text" matInput formControlName="designation_id">
             </mat-form-field>
 
-            <button class="col-md-4 col-sm-12 col-xs-12" color="accent" mat-button
+            <button class="col-md-4 col-sm-12 col-xs-12" color="warn" mat-button
               (click)="delete_designation(i)">Delete </button>
           </div>
         </div>
@@ -62,6 +62,6 @@
 
 <mat-dialog-actions align="end">
   <button mat-button title="Add Designation" (click)="add_new_designation()">Add Designation</button>
-  <button mat-button color="primary" title="Save New Department" (click)="save_department()">Save</button>
-  <button mat-button color="accent" title="Cancel" (click)="closeDialog(false)">Cancel</button>
+  <button mat-raised-button color="primary" title="Save New Department" (click)="save_department()">Save</button>
+  <button mat-raised-button color="accent" title="Cancel" (click)="closeDialog(false)">Cancel</button>
 </mat-dialog-actions>

@@ -12,6 +12,7 @@ import { LibraryComponent } from './library/library.component';
 import { ForgotPasswordComponent } from './forgot-password/forgot-password.component';
 import { AuthGuardService } from './services/guards/auth-guard.service';
 import { UserManagementComponent } from './user/user-management/user-management.component';
+import { TimetableComponent } from './timetable/timetable.component';
 
 
 const routes: Routes = [
@@ -21,7 +22,7 @@ const routes: Routes = [
   {
     path: "home",
     component: HomeComponent,
-    canActivateChild: [AuthGuardService],  
+    canActivate: [AuthGuardService],  
     children: [
       { path: "students", component: StudentsComponent },
       { path: "staffs", component: StaffsComponent },
@@ -31,6 +32,7 @@ const routes: Routes = [
       { path: "notice", component: NoticeComponent },
       { path: "library", component: LibraryComponent },
       { path: "users", component: UserManagementComponent },
+      { path: "timetable", component: TimetableComponent },
     ]
   },
   { path: "**", redirectTo:"/login" },

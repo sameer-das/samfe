@@ -1,6 +1,7 @@
-<button *ngIf="bShowNoticeList && +perm.permission_policy >= 2" mat-button (click)="showDocumentUpload()">Add Notice</button>
-
-<h5 class="text-center" *ngIf="bShowNoticeList && !notices.length">No Notice Found!</h5>
+<div class="container">
+  <button *ngIf="bShowNoticeList && +perm.permission_policy >= 2" mat-button color="primary" (click)="showDocumentUpload()">Add Notice</button>
+  <h5 class="text-center" *ngIf="bShowNoticeList && !notices.length">No Notice Found!</h5>
+</div>
 <div *ngIf="bShowNoticeList && notices.length" class="container">
   <table class="table">
     <thead>

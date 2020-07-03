@@ -1,6 +1,8 @@
-<button *ngIf="bShowPolicyList && +perm.permission_policy >= 2" mat-button (click)="showDocumentUpload()">Add Policy</button>
+<div class="container">
+  <button *ngIf="bShowPolicyList && +perm.permission_policy >= 2" mat-button color="primary" (click)="showDocumentUpload()">Add Policy</button>
+  <h5 class="text-center" *ngIf="bShowPolicyList && !policies.length">No Policies Found!</h5>
+</div>
 
-<h5 class="text-center" *ngIf="bShowPolicyList && !policies.length">No Policies Found!</h5>
 <div *ngIf="bShowPolicyList && policies.length" class="container">
   <table class="table">
     <thead>
