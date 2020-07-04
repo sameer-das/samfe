@@ -7,8 +7,9 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 })
 export class LibraryService {
 
-  constructor(private _http: HttpClient) { }
-  URL: string = 'http://localhost:3000';
+  constructor(private _http: HttpClient, private _global: Global) { }
+  // URL: string = 'http://localhost:3000';
+  URL: string = this._global.ServiceBaseURL;;
 
   add_book(book) {
     return this._http.post(this.URL + '/book', book);

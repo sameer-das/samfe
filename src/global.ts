@@ -1,3 +1,3 @@
 export class Global {
-    ServiceURL: string = 'http://localhost:3000';
+    ServiceBaseURL: string = 'http://localhost:3000';
 }

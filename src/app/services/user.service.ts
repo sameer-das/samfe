@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import decode from 'jwt-decode';
+import { Global } from 'src/global';
 
 
 @Injectable({
@@ -8,8 +9,9 @@ import decode from 'jwt-decode';
 })
 export class UserService {
 
-  constructor(private _http: HttpClient) { }
-  url = "http://localhost:3000";
+  constructor(private _http: HttpClient, private _global: Global) { }
+  // url = "http://localhost:3000";
+  url: string = this._global.ServiceBaseURL;
   token = null;
   private permission = {
     permission_staff: '0',

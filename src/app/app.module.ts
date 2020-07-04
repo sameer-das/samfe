@@ -40,6 +40,7 @@ import { UserComponent } from './user/user/user.component';
 import { UserManagementComponent } from './user/user-management/user-management.component';
 import { RolesComponent } from './user/roles/roles.component';
 import { TimetableComponent } from './timetable/timetable.component';
+import { Global } from 'src/global';
 
 @NgModule({
   declarations: [
@@ -86,7 +87,7 @@ import { TimetableComponent } from './timetable/timetable.component';
     JwtModule,
     AppRoutingModule,
   ],
-  providers: [HttpClient,  { provide: JWT_OPTIONS, useValue: JWT_OPTIONS }, JwtHelperService],
+  providers: [HttpClient,  { provide: JWT_OPTIONS, useValue: JWT_OPTIONS }, JwtHelperService, Global],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

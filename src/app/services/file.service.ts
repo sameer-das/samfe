@@ -1,32 +1,32 @@
-import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { Injectable } from "@angular/core";
+import { HttpClient } from "@angular/common/http";
+import { Global } from 'src/global';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: "root",
 })
 export class FileService {
-
-  constructor(private _http: HttpClient) { }
-  URL: string = 'http://localhost:3000';
+  constructor(private _http: HttpClient, private _global: Global) {}
+  // URL: string = 'http://localhost:3000';
+  URL: string = this._global.ServiceBaseURL;
 
   upload(formdata: FormData) {
-    return this._http.post(this.URL + '/upload', formdata);
+    return this._http.post(this.URL + "/upload", formdata);
   }
 
   download(uniqid: string) {
-    return this._http.get(this.URL + '/download/' + uniqid);
+    return this._http.get(this.URL + "/download/" + uniqid);
   }
 
   delete(uniqid: string) {
-    return this._http.delete(this.URL + '/deletedocument/' + uniqid);
+    return this._http.delete(this.URL + "/deletedocument/" + uniqid);
   }
 
   read_policies() {
-    return this._http.get(this.URL + '/policy');
+    return this._http.get(this.URL + "/policy");
   }
 
   read_notices() {
-    return this._http.get(this.URL + '/notice');
+    return this._http.get(this.URL + "/notice");
   }
-
 }

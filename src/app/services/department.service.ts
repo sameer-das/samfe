@@ -1,13 +1,15 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { Global } from 'src/global';
 
 @Injectable({
   providedIn: 'root'
 })
 export class DepartmentService {
 
-  constructor(private _http: HttpClient) { }
-  url = 'http://localhost:3000';
+  constructor(private _http: HttpClient,  private _global: Global) { }
+  // url = 'http://localhost:3000';
+  url: string = this._global.ServiceBaseURL;
 
   get_departments() {
     return this._http.get(this.url + '/department')
